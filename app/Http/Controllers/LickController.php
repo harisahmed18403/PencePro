@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lick;
+use App\Models\Spit;
 use Illuminate\Http\Request;
 
 class LickController extends Controller
@@ -10,12 +11,41 @@ class LickController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $licks = Lick::orderBy('created_at', 'desc')->paginate(10);
+        $search = $request->input('search');
+        $filter = $request->input('filter');
 
-        return view("licks.index", compact("licks"));
+        //Total revenue before filtering
+        $lickRevenue = Lick::sum('revenue') * -1;
+        $spitRevenue = Spit::sum('revenue');
+        $totalRevenue = $spitRevenue + $lickRevenue;
+
+        $licksQuery = Lick::withCount('spit')->orderBy('created_at', 'desc');
+
+        if ($search) {
+            $licksQuery->where('name', 'LIKE', "%{$search}%");
+        }
+
+        if ($filter === 'noSpits') {
+            $licksQuery->has('spit', '=', 0);
+        } elseif ($filter === 'hasSpits') {
+            $licksQuery->has('spit', '>', 0);
+        }
+
+        $licks = $licksQuery->paginate(20)->onEachSide(1);
+        $licks->appends(['search' => $search, 'filter' => $filter]);
+
+        return view("licks.index", compact(
+            "licks",
+            "search",
+            "filter",
+            "lickRevenue",
+            "spitRevenue",
+            "totalRevenue"
+        ));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -79,5 +109,10 @@ class LickController extends Controller
     public function destroy(Lick $lick)
     {
         //
+    }
+
+    public function stats()
+    {
+        return view('licks.stats');
     }
 }

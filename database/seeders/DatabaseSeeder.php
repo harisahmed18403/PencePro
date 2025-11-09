@@ -23,6 +23,6 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        Lick::factory(10)->create();
+        Lick::factory(2000)->create();
     }
 }

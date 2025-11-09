@@ -12,3 +12,11 @@
 main .btn{
     @apply btn-xs md:btn-md text-[10px] md:text-base text-nowrap
 }
+
+main .input{
+    @apply input-xs md:input-md;
+}
+
+main .select{
+    @apply select-xs md:select-md
+}

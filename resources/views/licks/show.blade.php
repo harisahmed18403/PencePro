@@ -17,6 +17,11 @@
                             <span class="font-medium">Spit Revenue (£):</span>
                             <span>{{ number_format($lick->spit->revenue, 2) }}</span>
                         </div>
+
+                        <div class="flex justify-between">
+                            <span class="font-medium">Profit (£):</span>
+                            <x-profit :profit="$lick->profit()"></x-profit>
+                        </div>
                     @endif
 
                     <div class="divider"></div>
