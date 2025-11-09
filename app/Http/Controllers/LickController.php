@@ -54,7 +54,7 @@ class LickController extends Controller
      */
     public function show(Lick $lick)
     {
-        //
+        return view('licks.show', compact('lick'));
     }
 
     /**

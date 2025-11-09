@@ -9,6 +9,6 @@
     themes:all
 }
 
-.btn{
-    @apply btn-xs md:btn-md text-xs md:text-base text-nowrap
+main .btn{
+    @apply btn-xs md:btn-md text-[10px] md:text-base text-nowrap
 }
