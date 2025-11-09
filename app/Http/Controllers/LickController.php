@@ -12,7 +12,7 @@ class LickController extends Controller
      */
     public function index()
     {
-        $licks = Lick::paginate(10);
+        $licks = Lick::orderBy('created_at', 'desc')->paginate(10);
 
         return view("licks.index", compact("licks"));
     }
@@ -22,7 +22,7 @@ class LickController extends Controller
      */
     public function create()
     {
-        //
+        return view("licks.create");
     }
 
     /**
@@ -30,7 +30,23 @@ class LickController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'revenue' => 'required|numeric|min:0',
+
+            // Optional Spit field
+            'spit_revenue' => 'nullable|numeric|min:0',
+        ]);
+
+        $lick = Lick::create($validated);
+
+        if ($request->filled('spit_revenue')) {
+            $lick->spit()->create([
+                'revenue' => $validated['spit_revenue'] ?? 0,
+            ]);
+        }
+
+        return redirect()->route('licks.index')->with('success', 'Devious lick!');
     }
 
     /**

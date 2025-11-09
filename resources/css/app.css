@@ -8,3 +8,7 @@
 @plugin "daisyui"{
     themes:all
 }
+
+.btn{
+    @apply btn-xs md:btn-md text-xs md:text-base text-nowrap
+}

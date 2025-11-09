@@ -20,7 +20,7 @@ class SpitController extends Controller
      */
     public function create()
     {
-        //
+        return view("spits.create");
     }
 
     /**
