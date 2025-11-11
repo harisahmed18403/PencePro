@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+    <a href="{{ route('licks.index', ['page' => session()->get('licks_index_page')]) }}"
+        class="btn btn-xs btn-soft">Back</a>
     <div class="max-w-2xl mx-auto mt-8">
         <div class="card bg-base-100 shadow-md">
             <div class="card-body">
@@ -27,9 +29,15 @@
                     <div class="divider"></div>
 
                     <div class="flex justify-between text-sm text-gray-500">
-                        <span>Created:</span>
+                        <span>Licked at:</span>
                         <span>{{ $lick->created_at->format('F j, Y g:i A') }}</span>
                     </div>
+                    @if ($lick->spit)
+                        <div class="flex justify-between text-sm text-gray-500">
+                            <span>Spat at:</span>
+                            <span>{{ $lick->spit->created_at->format('F j, Y g:i A') }}</span>
+                        </div>
+                    @endif
                     <div class="flex justify-between text-sm text-gray-500">
                         <span>Last Updated:</span>
                         <span>{{ $lick->updated_at->format('F j, Y g:i A') }}</span>

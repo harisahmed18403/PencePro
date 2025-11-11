@@ -13,8 +13,23 @@ class LickController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->input('search');
-        $filter = $request->input('filter');
+        // Only update session if input is present
+        if ($request->has('search')) {
+            session(['licks_index_search' => $request->input('search')]);
+        }
+
+        if ($request->has('filter')) {
+            session(['licks_index_filter' => $request->input('filter')]);
+        }
+
+        if ($request->has('page')) {
+            session(['licks_index_page' => $request->get('page')]);
+        }
+
+        // Retrieve from session if not in request
+        $search = $request->input('search', session('licks_index_search'));
+        $filter = $request->input('filter', session('licks_index_filter'));
+        $page = $request->get('page', session('licks_index_page', 1));
 
         //Total revenue before filtering
         $lickRevenue = Lick::sum('revenue') * -1;
@@ -31,18 +46,29 @@ class LickController extends Controller
             $licksQuery->has('spit', '=', 0);
         } elseif ($filter === 'hasSpits') {
             $licksQuery->has('spit', '>', 0);
+        } elseif (in_array($filter, ['profit', 'loss'])) {
+            $licksQuery->whereHas('spit', function ($query) use ($filter) {
+                if ($filter === 'profit') {
+                    $query->whereRaw('spits.revenue - licks.revenue >= 0');
+                } else {
+                    $query->whereRaw('spits.revenue - licks.revenue < 0');
+                }
+            });
         }
 
         $licks = $licksQuery->paginate(20)->onEachSide(1);
-        $licks->appends(['search' => $search, 'filter' => $filter]);
+
+        $totalPages = $licks->lastPage();
 
         return view("licks.index", compact(
             "licks",
+            "page",
             "search",
             "filter",
             "lickRevenue",
             "spitRevenue",
-            "totalRevenue"
+            "totalRevenue",
+            "totalPages"
         ));
     }
 
