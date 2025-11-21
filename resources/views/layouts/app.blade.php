@@ -17,10 +17,10 @@
     @endif
 </head>
 
-<body class="flex flex-col w-full h-full overflow-hidden">
+<body class="flex flex-col w-full h-full bg-base-200 overflow-hidden">
     <x-nav-bar></x-nav-bar>
 
-    <main class="flex-1 mx-auto md:my-2 w-full p-6 max-w-5xl overflow-hidden bg-base-200 rounded-md">
+    <main class="flex-1 mx-auto md:my-2 w-full p-2 md:px-6 max-w-5xl overflow-hidden rounded-md">
         @yield('content')
     </main>
 </body>

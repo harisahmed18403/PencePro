@@ -6,7 +6,7 @@
             <div class="card-body">
                 <h2 class="card-title text-2xl">Add Spit to {{ $lick->name }}</h2>
 
-                <form method="POST" action="{{ route('spits.store', $lick) }}" class="space-y-4 mt-4">
+                <form method="POST" action="{{ route('spits.store', ['id' => $lick->id]) }}" class="space-y-4 mt-4">
                     @csrf
 
                     <div class="form-control">

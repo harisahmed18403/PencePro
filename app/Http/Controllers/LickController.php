@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\LickImageTrait;
 use App\Models\Lick;
 use App\Models\Spit;
+use App\Models\LickImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class LickController extends Controller
 {
+    use LickImageTrait;
     /**
      * Display a listing of the resource.
      */
@@ -32,11 +37,11 @@ class LickController extends Controller
         $page = $request->get('page', session('licks_index_page', 1));
 
         //Total revenue before filtering
-        $lickRevenue = Lick::sum('revenue') * -1;
+        $lickRevenue = Lick::sum('cost') * -1;
         $spitRevenue = Spit::sum('revenue');
-        $totalRevenue = $spitRevenue + $lickRevenue;
+        $totalRevenue = Lick::sum('profit');
 
-        $licksQuery = Lick::withCount('spit')->orderBy('created_at', 'desc');
+        $licksQuery = Lick::withCount('spit', 'images')->orderBy('updated_at', 'desc');
 
         if ($search) {
             $licksQuery->where('name', 'LIKE', "%{$search}%");
@@ -47,18 +52,14 @@ class LickController extends Controller
         } elseif ($filter === 'hasSpits') {
             $licksQuery->has('spit', '>', 0);
         } elseif (in_array($filter, ['profit', 'loss'])) {
-            $licksQuery->whereHas('spit', function ($query) use ($filter) {
-                if ($filter === 'profit') {
-                    $query->whereRaw('spits.revenue - licks.revenue >= 0');
-                } else {
-                    $query->whereRaw('spits.revenue - licks.revenue < 0');
-                }
-            });
+            if ($filter === 'profit') {
+                $licksQuery->where('profit', '>=', "0");
+            } else {
+                $licksQuery->where('profit', '<', "0");
+            }
         }
 
         $licks = $licksQuery->paginate(20)->onEachSide(1);
-
-        $totalPages = $licks->lastPage();
 
         return view("licks.index", compact(
             "licks",
@@ -68,7 +69,6 @@ class LickController extends Controller
             "lickRevenue",
             "spitRevenue",
             "totalRevenue",
-            "totalPages"
         ));
     }
 
@@ -88,18 +88,29 @@ class LickController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'revenue' => 'required|numeric|min:0',
-
+            'cost' => 'required|numeric|min:0',
             // Optional Spit field
             'spit_revenue' => 'nullable|numeric|min:0',
         ]);
 
-        $lick = Lick::create($validated);
+        $lick = Lick::create([
+            'name' => $validated['name'],
+            'cost' => $validated['cost'],
+            'profit' => $validated['cost'] * -1,
+        ]);
 
         if ($request->filled('spit_revenue')) {
+            $profit = $validated['spit_revenue'] - $validated['cost'];
+            $lick->update(['profit' => $profit]);
             $lick->spit()->create([
                 'revenue' => $validated['spit_revenue'] ?? 0,
             ]);
+        }
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $this->storeLickImage($image, $lick->id);
+            }
         }
 
         return redirect()->route('licks.index')->with('success', 'Devious lick!');
@@ -118,15 +129,40 @@ class LickController extends Controller
      */
     public function edit(Lick $lick)
     {
-        //
+        return view('licks.edit', compact('lick'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Lick $lick)
+    public function update(Request $request, int $id)
     {
-        //
+        $lick = Lick::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'cost' => 'required|numeric|min:0',
+            // Optional Spit field
+            'spit_revenue' => 'nullable|numeric|min:0',
+        ]);
+
+        $profit = $validated['cost'] * -1;
+
+        if ($request->filled('spit_revenue')) {
+            $lick->spit->update([
+                'revenue' => $validated['spit_revenue'] ?? 0
+            ]);
+
+            $profit += $validated['spit_revenue'];
+        }
+
+        $lick->update([
+            'name' => $validated['name'],
+            'cost' => $validated['cost'],
+            'profit' => $profit,
+        ]);
+
+        return view('licks.show', compact('lick'))->with('success', 'Lick updated!');
     }
 
     /**
@@ -134,11 +170,90 @@ class LickController extends Controller
      */
     public function destroy(Lick $lick)
     {
-        //
+        foreach ($lick->images as $lickImage) {
+            $this->deleteLickImage($lickImage);
+        }
+
+        $lick->delete();
+        return redirect()->route('licks.index')->with('success', 'Lick deleted');
     }
 
-    public function stats()
+    public function stats(Request $request)
     {
-        return view('licks.stats');
+        $filters = [
+            'All Time',
+            'This Year',
+            'Last Month',
+            'Last Week',
+        ];
+
+        $limit = $request->get('limit', 10);
+        $filter = $request->get('filter');
+
+        $mostProfitableQuery = Lick::orderBy('profit', 'desc')->limit($limit);
+        $biggestLossQuery = Lick::orderBy('profit', 'asc')->limit($limit);
+
+        switch ($filter) {
+            case 'All Time':
+                break;
+            case 'This Year':
+                $mostProfitableQuery->whereYear('updated_at', date('Y'));
+                $biggestLossQuery->whereYear('updated_at', date('Y'));
+                break;
+            case 'Last Month':
+                $mostProfitableQuery->whereYear('updated_at', date('Y'))
+                    ->whereMonth('updated_at', date('m', strtotime('-1 month')));
+                $biggestLossQuery->whereYear('updated_at', date('Y'))
+                    ->whereMonth('updated_at', date('m', strtotime('-1 month')));
+                break;
+            case 'Last Week':
+                $mostProfitableQuery->whereBetween('updated_at', [
+                    now()->subWeek()->startOfWeek(),
+                    now()->subWeek()->endOfWeek()
+                ]);
+                $biggestLossQuery->whereBetween('updated_at', [
+                    now()->subWeek()->startOfWeek(),
+                    now()->subWeek()->endOfWeek()
+                ]);
+                break;
+        }
+
+        $mostProfitable = $mostProfitableQuery->get();
+        $biggestLoss = $biggestLossQuery->get();
+
+        $dailyProfitsRaw = Lick::select(
+            DB::raw('DATE(updated_at) as day'),
+            DB::raw('SUM(profit) as total_profit')
+        )
+            ->groupBy('day')
+            ->orderBy('day')
+            ->get();
+
+        $start = Lick::min('updated_at');
+        $end = Lick::max('updated_at');
+
+        $period = Carbon::parse($start)->daysUntil(Carbon::parse($end));
+
+        $profitsByDay = $dailyProfitsRaw->pluck('total_profit', 'day');
+
+        $dailyProfits = [
+            'labels' => [],
+            'series' => [],
+        ];
+
+        foreach ($period as $date) {
+            $day = $date->toDateString();
+            $dailyProfits['labels'][] = $day;
+            $dailyProfits['series'][] = $profitsByDay[$day] ?? 0; // fill missing days with 0
+        }
+
+        return view('licks.stats', compact(
+            'limit',
+            'filters',
+            'filter',
+            'mostProfitable',
+            'biggestLoss',
+            'dailyProfits'
+        ));
     }
 }

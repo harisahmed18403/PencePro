@@ -16,9 +16,15 @@ class LickFactory extends Factory
      */
     public function definition(): array
     {
-        return [
+        $temp = [
             'name' => $this->faker->name,
-            'revenue' => $this->faker->numberBetween(1, 500)
+            'cost' => $this->faker->numberBetween(1, 500),
+            'created_at' => $this->faker->dateTimeBetween('-2 years', 'now'),
+            'updated_at' => $this->faker->dateTimeBetween('-1 years', 'now'),
         ];
+
+        $temp['profit'] = $temp['cost'] * -1;
+
+        return $temp;
     }
 }

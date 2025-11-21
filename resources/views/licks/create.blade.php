@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <form method="post" action="{{ route('licks.store') }}">
+    <form method="post" action="{{ route('licks.store') }}" enctype="multipart/form-data">
         @csrf
 
         <div class="flex flex-col gap-6" x-data="{ showSpit: false }">
@@ -17,23 +17,29 @@
                     @enderror
                 </div>
 
-                {{-- Revenue --}}
+                {{-- Cost --}}
                 <div class="flex flex-col">
-                    <label for="revenue" class="font-medium">Revenue (£):</label>
-                    <input name="revenue" id="revenue" type="number" step="2" placeholder="e.g. 9.99" class="input w-full"
+                    <label for="cost" class="font-medium">Cost (£):</label>
+                    <input name="cost" id="cost" type="number" step="0.1" placeholder="e.g. 9.99" class="input w-full"
                         required />
-                    @error('revenue')
+                    @error('cost')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
-                {{-- Has Spit Toggle --}}
+                {{-- Images --}}
+                <div class="flex flex-col">
+                    <label for="images" class="font-medium">Images:</label>
+                    <input type="file" id="images" class="file-input file-input-xs" name="images[]" multiple>
+                </div>
+
+                {{-- Spit toggle --}}
                 <div class="flex items-center gap-2">
                     <label for="hasSpit" class="font-medium">Has Spit</label>
                     <input type="checkbox" class="toggle" name="hasSpit" id="hasSpit" @change="showSpit = !showSpit" />
                 </div>
 
-                {{-- Spit Revenue (conditionally visible) --}}
+                {{-- Spit --}}
                 <div class="flex flex-col" x-show="showSpit" x-cloak>
                     <label for="spit_revenue" class="font-medium">Spit Revenue (£):</label>
                     <input type="number" name="spit_revenue" id="spit_revenue" placeholder="Spit revenue"

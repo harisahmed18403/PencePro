@@ -10,13 +10,12 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('spits', function (Blueprint $table) {
+        Schema::create('lick_images', function (Blueprint $table) {
             $table->id();
             $table->foreignId('lick_id')->constrained('licks', 'id')->cascadeOnDelete();
-            $table->float('revenue');
+            $table->string('image_path');
+            $table->string('note')->nullable(true);
             $table->timestamps();
-
-            $table->index('lick_id');
         });
     }
 
@@ -25,6 +24,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('spits');
+        Schema::dropIfExists('lick_images');
     }
 };

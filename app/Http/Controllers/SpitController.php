@@ -27,19 +27,22 @@ class SpitController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Lick $lick)
+    public function store(Request $request, $id)
     {
+        $lick = Lick::findOrFail($id);
+
         $validated = $request->validate([
             'revenue' => 'required|numeric|min:0',
         ]);
 
-        $lick->spit()->create([
+        Spit::create([
             'lick_id' => $lick->id,
             'revenue' => $validated['revenue'],
         ]);
 
-        return redirect()->route('licks.show', $lick)->with('success', 'Spit created successfully!');
+        $lick->update(['profit' => $validated['revenue'] - $lick->cost]);
 
+        return redirect()->route('licks.show', $lick)->with('success', 'Spit created successfully!');
     }
 
     /**

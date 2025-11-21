@@ -10,8 +10,8 @@
 
                 <div class="mt-4 space-y-2">
                     <div class="flex justify-between">
-                        <span class="font-medium">Revenue (£):</span>
-                        <span>{{ number_format($lick->revenue, 2) }}</span>
+                        <span class="font-medium">Cost (£):</span>
+                        <span>{{ number_format($lick->cost, 2) }}</span>
                     </div>
 
                     @if ($lick->spit)
@@ -22,7 +22,15 @@
 
                         <div class="flex justify-between">
                             <span class="font-medium">Profit (£):</span>
-                            <x-profit :profit="$lick->profit()"></x-profit>
+                            <x-profit :profit="$lick->profit"></x-profit>
+                        </div>
+                    @endif
+
+                    @if(!$lick->images->isEmpty())
+                        <div class="divider"></div>
+
+                        <div class="flex flex-col justify-center items-center h-34 mx-auto">
+                            <x-image-carousel :lick="$lick"></x-image-carousel>
                         </div>
                     @endif
 

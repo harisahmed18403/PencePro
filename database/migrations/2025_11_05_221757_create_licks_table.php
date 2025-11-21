@@ -13,8 +13,11 @@ return new class extends Migration {
         Schema::create('licks', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->float('revenue');
+            $table->float('cost');
+            $table->float('profit')->nullable(true);
             $table->timestamps();
+
+            $table->index('profit');
         });
     }
 
