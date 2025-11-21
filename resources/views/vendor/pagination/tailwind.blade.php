@@ -11,7 +11,8 @@
         {{-- Current Page Info --}}
         <form method="GET" action="{{ route('licks.index') }}" class="btn btn-soft join-item flex-2">
             <input type="number" name="page" min="1" max="{{ $paginator->lastPage() }}"
-                value="{{ $paginator->currentPage() }}" class="w-4 md:w-14 text-center" onchange="this.form.submit()" />
+                value="{{ $paginator->currentPage() }}" class="w-auto max-w-1/3 md:w-14 text-center"
+                onchange="this.form.submit()" />
             <span>of {{ $paginator->lastPage() }}</span>
         </form>
 
