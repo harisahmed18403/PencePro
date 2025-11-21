@@ -23,7 +23,13 @@ https://cdn.jsdelivr.net/npm/echarts@6.0.0/dist/echarts.min.js
                 smooth: true,
                 triggerLineEvent: true
             }],
-            animation: false
+            animation: false,
+            grid: {
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 0
+            }
         };
 
         myChart.setOption(option);

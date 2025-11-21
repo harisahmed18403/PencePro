@@ -205,49 +205,60 @@ class LickController extends Controller
         ];
 
         $limit = $request->get('limit', 10);
-        $filter = $request->get('filter');
+        $filter = $request->get('filter', 'Last Month');
 
         $mostProfitableQuery = Lick::orderBy('profit', 'desc')->limit($limit);
         $biggestLossQuery = Lick::orderBy('profit', 'asc')->limit($limit);
+        $dailyProfitsQuery = Lick::query();
 
         switch ($filter) {
             case 'All Time':
                 break;
+
             case 'This Year':
                 $mostProfitableQuery->whereYear('updated_at', date('Y'));
                 $biggestLossQuery->whereYear('updated_at', date('Y'));
+                $dailyProfitsQuery->whereYear('updated_at', date('Y'));
                 break;
+
             case 'Last Month':
                 $mostProfitableQuery->whereYear('updated_at', date('Y'))
                     ->whereMonth('updated_at', date('m', strtotime('-1 month')));
+
                 $biggestLossQuery->whereYear('updated_at', date('Y'))
                     ->whereMonth('updated_at', date('m', strtotime('-1 month')));
+
+                $dailyProfitsQuery->whereYear('updated_at', date('Y'))
+                    ->whereMonth('updated_at', date('m', strtotime('-1 month')));
                 break;
+
             case 'Last Week':
-                $mostProfitableQuery->whereBetween('updated_at', [
+                $range = [
                     now()->subWeek()->startOfWeek(),
                     now()->subWeek()->endOfWeek()
-                ]);
-                $biggestLossQuery->whereBetween('updated_at', [
-                    now()->subWeek()->startOfWeek(),
-                    now()->subWeek()->endOfWeek()
-                ]);
+                ];
+
+                $mostProfitableQuery->whereBetween('updated_at', $range);
+                $biggestLossQuery->whereBetween('updated_at', $range);
+                $dailyProfitsQuery->whereBetween('updated_at', $range);
                 break;
         }
 
         $mostProfitable = $mostProfitableQuery->get();
         $biggestLoss = $biggestLossQuery->get();
 
-        $dailyProfitsRaw = Lick::select(
-            DB::raw('DATE(updated_at) as day'),
-            DB::raw('SUM(profit) as total_profit')
-        )
+        $dailyProfitsRaw = $dailyProfitsQuery
+            ->select(
+                DB::raw('DATE(updated_at) as day'),
+                DB::raw('SUM(profit) as total_profit')
+            )
             ->groupBy('day')
             ->orderBy('day')
             ->get();
 
-        $start = Lick::min('updated_at');
-        $end = Lick::max('updated_at');
+
+        $start = optional($dailyProfitsRaw->first())->day;
+        $end = optional($dailyProfitsRaw->last())->day;
 
         $period = Carbon::parse($start)->daysUntil(Carbon::parse($end));
 

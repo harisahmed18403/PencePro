@@ -39,6 +39,7 @@
         </div>
 
     </div>
+    <div class="divider"></div>
     <div class="flex h-full max-h-1/2">
         <x-line-chart :labels="$dailyProfits['labels']" :series="$dailyProfits['series']" title="Daily Profits"
             id="dailyProfitGraph"></x-line-chart>
