@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="max-w-4xl w-full mx-auto p-6 bg-base-200 rounded-xl shadow">
-        <form method="post" action="{{ route('licks.update', $lick->id) }}" class="space-y-6">
+        <form method="post" action="{{ route('licks.update', $lick->id) }}" enctype="multipart/form-data" class="space-y-6">
             @csrf
             @method('PUT')
 

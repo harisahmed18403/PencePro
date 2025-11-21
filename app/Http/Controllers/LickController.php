@@ -173,6 +173,12 @@ class LickController extends Controller
             }
         }
 
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $this->storeLickImage($image, $lick->id);
+            }
+        }
+
         return view('licks.show', compact('lick'))->with('success', 'Lick updated!');
     }
 
