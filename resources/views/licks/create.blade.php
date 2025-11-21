@@ -1,52 +1,64 @@
 @extends('layouts.app')
 
 @section('content')
-    <form method="post" action="{{ route('licks.store') }}" enctype="multipart/form-data">
-        @csrf
+    <div class="max-w-4xl w-full mx-auto p-6 bg-base-200 rounded-xl shadow">
+        <form method="POST" action="{{ route('licks.store') }}" enctype="multipart/form-data" class="space-y-6">
+            @csrf
 
-        <div class="flex flex-col gap-6" x-data="{ showSpit: false }">
-            <p class="text-lg md:text-2xl">New Lick</p>
-            <div class="flex flex-col gap-4">
-                {{-- Name --}}
-                <div class="flex flex-col">
-                    <label for="name" class="font-medium">Name:</label>
-                    <input name="name" id="name" placeholder="e.g. iPhone 13" class="input w-full" maxlength="255"
-                        required />
-                    @error('name')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
+            <div class="flex flex-col gap-6" x-data="{ hasSpit: false }">
+                <p class="text-2xl font-semibold">New Lick</p>
+
+                <div class="flex flex-col gap-4">
+                    <div class="form-control">
+                        <label for="name" class="label">
+                            <span class="label-text">Name:</span>
+                        </label>
+                        <input name="name" id="name" maxlength="255" class="input input-bordered w-full" required />
+                        @error('name')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                        @error('name')
+                            <p class="text-error text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="form-control">
+                        <label for="cost" class="label">
+                            <span class="label-text">Cost (£):</span>
+                        </label>
+                        <input name="cost" id="cost" type="number" step="0.1" class="input input-bordered w-full"
+                            required />
+                        @error('cost')
+                            <p class="text-error text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="form-control">
+                        <label for="hasSpit" class="label">
+                            <span class="label-text">Spat ?</span>
+                        </label>
+                        <input type="checkbox" id="hasSpit" name="hasSpit" class="toggle" x-model="hasSpit" />
+                    </div>
+
+                    <div class="form-control" x-show="hasSpit">
+                        <label for="spit_revenue" class="label">
+                            <span class="label-text">Spit Revenue (£):</span>
+                        </label>
+                        <input type="number" name="spit_revenue" id="spit_revenue" class="input input-bordered w-full" />
+                    </div>
+
+                    <div class="form-control">
+                        <label for="spit_revenue" class="label">
+                            <span class="label-text">Images:</span>
+                        </label>
+                        <input type="file" name="images[]" id="images" class="file-input input-bordered w-full" multiple />
+                    </div>
                 </div>
 
-                {{-- Cost --}}
-                <div class="flex flex-col">
-                    <label for="cost" class="font-medium">Cost (£):</label>
-                    <input name="cost" id="cost" type="number" step="0.1" placeholder="e.g. 9.99" class="input w-full"
-                        required />
-                    @error('cost')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                {{-- Images --}}
-                <div class="flex flex-col">
-                    <label for="images" class="font-medium">Images:</label>
-                    <input type="file" id="images" class="file-input file-input-xs" name="images[]" multiple>
-                </div>
-
-                {{-- Spit toggle --}}
-                <div class="flex items-center gap-2">
-                    <label for="hasSpit" class="font-medium">Has Spit</label>
-                    <input type="checkbox" class="toggle" name="hasSpit" id="hasSpit" @change="showSpit = !showSpit" />
-                </div>
-
-                {{-- Spit --}}
-                <div class="flex flex-col" x-show="showSpit" x-cloak>
-                    <label for="spit_revenue" class="font-medium">Spit Revenue (£):</label>
-                    <input type="number" name="spit_revenue" id="spit_revenue" placeholder="Spit revenue"
-                        class="input w-full" />
+                <div class="flex justify-end">
+                    <button type="submit" class="btn btn-success">Update</button>
                 </div>
             </div>
-            <button type="submit" class="btn btn-success self-end">Create</button>
-        </div>
-    </form>
+        </form>
+    </div>
 @endsection

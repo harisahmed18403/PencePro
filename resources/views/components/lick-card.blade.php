@@ -7,17 +7,20 @@
             <x-profit class="card-title" :profit="$lick->profit"></x-profit>
         </div>
         <div class="flex justify-between">
-            <div>
-                <p>licked <span class="text-error">&pound; -{{ $lick->cost }}</span></p>
+            <div class="grid grid-cols-[min-content_1fr] gap-x-4">
+                <p>Licked:</p>
+                <span class="text-error">&pound; -{{ $lick->cost }}</span>
+
+                <p>Spat:</p>
                 @if($lick->spit)
-                    <p>spat <span class="text-success">&pound; +{{ $lick->spit->revenue }}</span></p>
+                    <span class="text-success">&pound; +{{ $lick->spit->revenue }}</span>
                 @else
                     <span>-</span>
                 @endif
             </div>
 
-            <div class="flex text-xs w-1/3 max-w-30 text-end">
-                <p>Updated: <span class="text-info">{{ $lick->updated_at->format('d-m-y') }}</span></p>
+            <div class="flex max-w-30 text-end">
+                <p>{{ $lick->updated_at->format('d-m-y') }}</p>
             </div>
         </div>
         @if ($lick->images->isNotEmpty())
