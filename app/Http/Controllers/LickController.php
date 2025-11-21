@@ -55,7 +55,8 @@ class LickController extends Controller
             if ($filter === 'profit') {
                 $licksQuery->where('profit', '>=', "0");
             } else {
-                $licksQuery->where('profit', '<', "0");
+                $licksQuery->has('spit', '>', 0)
+                    ->where('profit', '<', "0");
             }
         }
 
@@ -161,6 +162,16 @@ class LickController extends Controller
             'cost' => $validated['cost'],
             'profit' => $profit,
         ]);
+
+        if ($request->filled('deleteImages')) {
+            $deleteImages = $request->get('deleteImages', []);
+            foreach ($deleteImages as $i => $imageID) {
+                $lickImage = LickImage::find($imageID);
+                if ($lickImage) {
+                    $this->deleteLickImage($lickImage);
+                }
+            }
+        }
 
         return view('licks.show', compact('lick'))->with('success', 'Lick updated!');
     }
