@@ -4,7 +4,7 @@ use App\Http\Controllers\LickController;
 use App\Http\Controllers\SpitController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [LickController::class, 'index']);
+Route::get('/', [LickController::class, 'index'])->name('home');
 
 Route::get('/licks/stats', [LickController::class, 'stats'])->name('licks.stats');
 

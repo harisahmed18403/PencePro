@@ -1,5 +1,5 @@
 @props(['lick', 'checkbox' => false])
-<div class="carousel carousel-center bg-neutral rounded-box max-w-md h-64 space-x-4 p-4">
+<div class="carousel carousel-center bg-neutral rounded-box w-auto h-64 space-x-4 p-4">
     @foreach ($lick->images as $lickImage)
         <div class="carousel-item relative h-full">
             <img src="{{ asset('storage/' . $lickImage->image_path) }}" class="h-full w-auto object-contain rounded" />

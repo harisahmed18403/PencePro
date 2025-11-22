@@ -49,7 +49,7 @@
                     </div>
 
                     @if ($lick->images->isNotEmpty())
-                        <div class="form-control">
+                        <div class="form-control flex w-full justify-center">
                             <x-image-carousel :lick="$lick" :checkbox="true"></x-image-carousel>
                         </div>
                     @endif

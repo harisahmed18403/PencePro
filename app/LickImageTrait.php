@@ -4,13 +4,25 @@ namespace App;
 
 use App\Models\LickImage;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Laravel\Facades\Image;
 
 trait LickImageTrait
 {
-    public function storeLickImage(UploadedFile $image, $lick_id)
+    protected $storageDisk = 'public';
+    protected $imageFolder = 'lick_images';
+    public function storeLickImage(UploadedFile $uploadedFile, $lick_id)
     {
-        $path = $image->store('lick_images', 'public');
+        // Resize image to 300px
+        $resizedimage = Image::read($uploadedFile)->scale(width: 300);
+
+        $path = $this->imageFolder . DIRECTORY_SEPARATOR . Str::uuid() . '.' . $uploadedFile->getClientOriginalExtension();
+
+        Storage::disk($this->storageDisk)->put(
+            $path,
+            $resizedimage->encodeByExtension($uploadedFile->getClientOriginalExtension(), quality: 60)
+        );
 
         LickImage::create([
             'lick_id' => $lick_id,
@@ -22,8 +34,8 @@ trait LickImageTrait
     {
         if ($lickImage) {
             // Delete file from storage
-            if (Storage::disk('public')->exists($lickImage->image_path)) {
-                Storage::disk('public')->delete($lickImage->image_path);
+            if (Storage::disk($this->storageDisk)->exists($lickImage->image_path)) {
+                Storage::disk($this->storageDisk)->delete($lickImage->image_path);
             }
 
             // Delete record from DB
