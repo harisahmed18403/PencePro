@@ -12,16 +12,18 @@ trait LickImageTrait
 {
     protected $storageDisk = 'public';
     protected $imageFolder = 'lick_images';
+    protected $uploadExt = 'webp';
+    protected $uploadQuality = 60;
     public function storeLickImage(UploadedFile $uploadedFile, $lick_id)
     {
         // Resize image to 300px
         $resizedimage = Image::read($uploadedFile)->scale(width: 300);
 
-        $path = $this->imageFolder . DIRECTORY_SEPARATOR . Str::uuid() . '.' . $uploadedFile->getClientOriginalExtension();
+        $path = $this->imageFolder . DIRECTORY_SEPARATOR . Str::uuid() . '.' . $this->uploadExt;
 
         Storage::disk($this->storageDisk)->put(
             $path,
-            $resizedimage->encodeByExtension($uploadedFile->getClientOriginalExtension(), quality: 60)
+            $resizedimage->encodeByExtension($this->uploadExt, quality: $this->uploadQuality)
         );
 
         LickImage::create([
