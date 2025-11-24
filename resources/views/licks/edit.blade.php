@@ -6,60 +6,37 @@
             @csrf
             @method('PUT')
 
-            <div class="flex flex-col gap-6">
-                <p class="text-2xl font-semibold">Edit Lick</p>
+            <x-form-body title="Edit Lick">
 
-                <div class="flex flex-col gap-4">
-                    <div class="form-control">
-                        <label for="name" class="label">
-                            <span class="label-text">Name:</span>
-                        </label>
-                        <input name="name" id="name" value="{{ $lick->name }}" maxlength="255"
-                            class="input input-bordered w-full" required />
-                        @error('name')
-                            <p class="text-error text-sm mt-1">{{ $message }}</p>
-                        @enderror
+                {{-- Name --}}
+                <x-form-input name="name" :value="old('name', $lick->name)" label="name"></x-form-input>
+
+                {{-- Cost --}}
+                <x-form-input name="cost" :value="old('cost', $lick->cost)" label="cost (£)" type="number"
+                    additionalAttributes="step='0.1'"></x-form-input>
+
+                {{-- Spit Revenue --}}
+                @if ($lick->spit)
+                    <x-form-input name="spit_revenue" :value="old('spit_revenue', $lick->spit->revenue)"
+                        label="Spit Revenue (£)" type="number" additionalAttributes="step='0.1'"></x-form-input>
+                @endif
+
+                {{-- Additional Images --}}
+                <x-form-input name="images[]" id="images" label="Add Images" type="file" additionalAttributes="multiple"
+                    :required="false"></x-form-input>
+
+
+                {{-- Existing Images --}}
+                @if ($lick->images->isNotEmpty())
+                    <div class="form-control flex w-full justify-center">
+                        <x-image-carousel :lick="$lick" :checkbox="true"></x-image-carousel>
                     </div>
-
-                    <div class="form-control">
-                        <label for="cost" class="label">
-                            <span class="label-text">Cost (£):</span>
-                        </label>
-                        <input name="cost" id="cost" type="number" step="0.1" value="{{ $lick->cost }}"
-                            class="input input-bordered w-full" required />
-                        @error('cost')
-                            <p class="text-error text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    @if ($lick->spit)
-                        <div class="form-control">
-                            <label for="spit_revenue" class="label">
-                                <span class="label-text">Spit Revenue (£):</span>
-                            </label>
-                            <input type="number" name="spit_revenue" id="spit_revenue" value="{{ $lick->spit->revenue }}"
-                                class="input input-bordered w-full" />
-                        </div>
-                    @endif
-
-                    <div class="form-control">
-                        <label for="images" class="label">Add Images</label>
-                        <input type="file" id="images" class="file-input file-input-bordered w-full" name="images[]"
-                            multiple>
-                    </div>
-
-                    @if ($lick->images->isNotEmpty())
-                        <div class="form-control flex w-full justify-center">
-                            <x-image-carousel :lick="$lick" :checkbox="true"></x-image-carousel>
-                        </div>
-                    @endif
-                </div>
-
+                @endif
 
                 <div class="flex justify-end">
                     <button type="submit" class="btn btn-success">Update</button>
                 </div>
-            </div>
+            </x-form-body>
         </form>
     </div>
 @endsection
