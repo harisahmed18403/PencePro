@@ -204,7 +204,7 @@ class LickController extends Controller
             'This Week',
         ];
 
-        $limit = $request->get('limit', 10);
+        $limit = $request->get('limit', 50);
         $filter = $request->get('filter', 'This Month');
 
         $mostProfitableQuery = Lick::orderBy('profit', 'desc')->limit($limit);
@@ -249,7 +249,7 @@ class LickController extends Controller
 
         $dailyProfitsRaw = $dailyProfitsQuery
             ->select(
-                DB::raw('DATE(updated_at) as day'),
+                DB::raw('DATE(created_at) as day'),
                 DB::raw('SUM(profit) as total_profit')
             )
             ->groupBy('day')
