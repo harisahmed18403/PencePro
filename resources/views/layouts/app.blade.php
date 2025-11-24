@@ -25,17 +25,12 @@
         @yield('content')
     </main>
 
-    {{-- Register Service worker for PWA --}}
+    {{-- Register service worker --}}
     <script>
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function () {
-                navigator.serviceWorker.register('{{ asset("sw.js") }}')
-                    .then(registration => {
-                        console.log('ServiceWorker registered with scope:', registration.scope);
-                    }).catch(error => {
-                        console.log('ServiceWorker registration failed:', error);
-                    });
-            });
+            navigator.serviceWorker.register('{{ asset("service-worker.js") }}')
+                .then(() => console.log('Service worker registered'))
+                .catch(err => console.error('Service worker registration failed:', err));
         }
     </script>
 
