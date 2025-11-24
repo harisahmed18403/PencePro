@@ -29,7 +29,7 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function () {
-                navigator.serviceWorker.register('{{ asset("service-worker.js") }}')
+                navigator.serviceWorker.register('{{ asset("sw.js") }}')
                     .then(registration => {
                         console.log('ServiceWorker registered with scope:', registration.scope);
                     }).catch(error => {
