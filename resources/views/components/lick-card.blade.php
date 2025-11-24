@@ -31,12 +31,12 @@
         <div class="flex justify-between items-center card-actions">
             <div>
                 @if(!$lick->spit)
-                    <div class="badge badge-soft badge-warning badge-sm md:badge-lg">Not Spat</div>
+                    <div class="badge badge-soft badge-warning md:badge-lg">Not Spat</div>
                 @else
                     @if($lick->profit > 0)
-                        <div class="badge badge-soft badge-success badge-sm md:badge-lg">Profit</div>
+                        <div class="badge badge-soft badge-success md:badge-lg">Profit</div>
                     @else
-                        <div class="badge badge-soft badge-error badge-sm md:badge-lg">Loss</div>
+                        <div class="badge badge-soft badge-error md:badge-lg">Loss</div>
                     @endif
                 @endif
             </div>
