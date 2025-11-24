@@ -1,12 +1,12 @@
 @if ($paginator->hasPages())
-    <div class="join flex w-full mt-4">
+    <div class="join flex w-full bg-base-300">
         {{-- First Page Link --}}
         <a href="{{ $paginator->url(1) }}"
             class="join-item flex-1 btn btn-soft {{ $paginator->onFirstPage() ? 'btn-disabled' : '' }}">««</a>
 
         {{-- Previous Page Link --}}
         <a href="{{ $paginator->previousPageUrl() }}"
-            class="join-item flex-8 btn btn-soft {{ $paginator->onFirstPage() ? 'btn-disabled' : '' }}">«</a>
+            class="join-item flex-5 btn btn-soft {{ $paginator->onFirstPage() ? 'btn-disabled' : '' }}">«</a>
 
         {{-- Current Page Info --}}
         <form method="GET" action="{{ route('licks.index') }}" class="btn btn-soft join-item flex-2">
@@ -18,7 +18,7 @@
 
         {{-- Next Page Link --}}
         <a href="{{ $paginator->nextPageUrl() }}"
-            class="join-item flex-8 btn btn-soft {{ $paginator->currentPage() == $paginator->lastPage() ? 'btn-disabled' : '' }}">»</a>
+            class="join-item flex-5 btn btn-soft {{ $paginator->currentPage() == $paginator->lastPage() ? 'btn-disabled' : '' }}">»</a>
 
         {{-- Last Page Link --}}
         <a href="{{ $paginator->url($paginator->lastPage()) }}"

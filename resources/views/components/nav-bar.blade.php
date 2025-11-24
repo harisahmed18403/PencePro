@@ -1,13 +1,16 @@
-<div class="navbar justify-center bg-base-100 shadow-sm gap-2">
-    <div class="flex items-center gap-4 w-full">
-        <p class="text-xl font-medium">PencePro</p>
+<div class="navbar justify-center bg-base-100 shadow-sm">
+    <div class="flex justify-between items-center gap-4 md:px-6 w-full max-w-5xl">
+        <div class="flex gap-4">
+            <a href="{{ route('licks.index') }}"
+                class="btn {{ request()->routeIs('home', 'licks.index') ? '' : 'btn-ghost' }}">
+                Home
+            </a>
 
-        <a href="{{ route('licks.index') }}" class="btn {{ request()->routeIs('home') ? '' : 'btn-ghost' }}">
-            Home
-        </a>
+            <a href="{{ route('licks.stats') }}" class="btn {{ request()->routeIs('licks.stats') ? '' : 'btn-ghost' }}">
+                Stats
+            </a>
+        </div>
 
-        <a href="{{ route('licks.stats') }}" class="btn {{ request()->routeIs('licks.stats') ? '' : 'btn-ghost' }}">
-            Stats
-        </a>
+        <p class="md:text-xl font-medium text-end">PencePro</p>
     </div>
 </div>

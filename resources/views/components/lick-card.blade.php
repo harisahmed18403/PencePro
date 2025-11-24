@@ -1,6 +1,6 @@
 @props(['lick'])
 
-<div class="card w-full bg-base-100 card-xs md:card-md shadow-lg">
+<div class="card w-full bg-base-100 card-sm md:card-md shadow-lg">
     <div class="card-body">
         <div class="flex justify-between">
             <h2 class="card-title">{{ $lick->name }} </h2>
@@ -20,7 +20,7 @@
             </div>
 
             <div class="flex max-w-30 text-end">
-                <p>{{ $lick->updated_at->format('d-m-y') }}</p>
+                <p>{{ $lick->updated_at->format('d-M-y') }}</p>
             </div>
         </div>
         @if ($lick->images->isNotEmpty())
