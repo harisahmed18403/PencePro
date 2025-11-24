@@ -204,11 +204,19 @@ class LickController extends Controller
             'This Week',
         ];
 
+        $graphTypes = [
+            'Daily Profits',
+            'Daily Cumulative'
+        ];
+
         $limit = $request->get('limit', 50);
         $filter = $request->get('filter', 'This Month');
+        $graphType = $request->get('graphType', 'Daily Profits');
+
 
         $mostProfitableQuery = Lick::orderBy('profit', 'desc')->limit($limit);
         $biggestLossQuery = Lick::orderBy('profit', 'asc')->limit($limit);
+
         $dailyProfitsQuery = Lick::query();
 
         switch ($filter) {
@@ -269,16 +277,26 @@ class LickController extends Controller
             'series' => [],
         ];
 
+        $cumulative = 0;
         foreach ($period as $date) {
             $day = $date->toDateString();
+
+            if ($graphType == 'Daily Profits') {
+                $val = $profitsByDay[$day] ?? 0;
+            } elseif ($graphType == 'Daily Cumulative') {
+                $cumulative += $profitsByDay[$day] ?? 0;
+                $val = $cumulative;
+            }
             $dailyProfits['labels'][] = $day;
-            $dailyProfits['series'][] = $profitsByDay[$day] ?? 0; // fill missing days with 0
+            $dailyProfits['series'][] = $val; // fill missing days with 0
         }
 
         return view('licks.stats', compact(
             'limit',
             'filters',
             'filter',
+            'graphTypes',
+            'graphType',
             'mostProfitable',
             'biggestLoss',
             'dailyProfits'
