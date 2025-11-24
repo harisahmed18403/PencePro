@@ -4,23 +4,30 @@
     <div class="flex flex-col h-full w-full gap-2 overflow-hidden">
 
         <div class="flex flex-col md:flex-row h-full w-full gap-2">
-            <div class="flex md:flex-col overflow-x-auto h-auto min-h-1/16 md:min-w-1/4 gap-2 ">
+            <div class="flex md:flex-col overflow-x-auto h-auto min-h-1/16 md:min-w-1/4 gap-2 items-lastbaseline">
                 <a href="{{ route('licks.create') }}" class="btn btn-success">New +</a>
 
-                <div class="card card-xs text-nowrap px-4 md:py-4 md:card-md bg-base-100">
-                    <span class="text-sm font-semibold text-secondary">Total</span>
-                    <x-profit :profit="$totalRevenue" class="text-sm md:text-lg font-bold" />
+                <div class="stat p-2 rounded-lg bg-base-100 shadow">
+                    <div class="stat-title text-xs">Total</div>
+                    <div class="stat-value text-sm md:text-lg">
+                        <x-profit :profit="$totalRevenue" class="font-bold" />
+                    </div>
                 </div>
 
-                <div class="card card-xs text-nowrap px-4 md:py-4 md:card-md bg-base-100">
-                    <span class="text-sm font-semibold text-secondary">Licked</span>
-                    <x-profit :profit="$lickRevenue" class="text-sm md:text-lg font-bold" />
+                <div class="stat p-2 rounded-lg bg-base-100 shadow">
+                    <div class="stat-title text-xs">Licked</div>
+                    <div class="stat-value text-sm md:text-lg">
+                        <x-profit :profit="$lickRevenue" class="font-bold" />
+                    </div>
                 </div>
 
-                <div class="card card-xs text-nowrap px-4 md:py-4 md:card-md bg-base-100">
-                    <span class="text-sm font-semibold text-secondary">Spat</span>
-                    <x-profit :profit="$spitRevenue" class="text-sm md:text-lg font-bold" />
+                <div class="stat p-2 rounded-lg bg-base-100 shadow">
+                    <div class="stat-title text-xs">Spat</div>
+                    <div class="stat-value text-sm md:text-lg">
+                        <x-profit :profit="$spitRevenue" class="font-bold" />
+                    </div>
                 </div>
+
             </div>
 
             <div class="flex flex-col h-full w-full gap-2">
