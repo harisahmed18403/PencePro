@@ -15,6 +15,7 @@
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
 </head>
 
 <body class="flex flex-col w-full h-full bg-base-300 overflow-hidden">
@@ -23,6 +24,21 @@
     <main class="flex-1 mx-auto md:my-2 w-full p-2 md:px-6 max-w-5xl overflow-hidden rounded-md">
         @yield('content')
     </main>
+
+    {{-- Register Service worker for PWA --}}
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('{{ asset("service-worker.js") }}')
+                    .then(registration => {
+                        console.log('ServiceWorker registered with scope:', registration.scope);
+                    }).catch(error => {
+                        console.log('ServiceWorker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+
 </body>
 
 </html>
