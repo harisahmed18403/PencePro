@@ -28,12 +28,16 @@
     {{-- Register service worker --}}
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('{{ asset("sw.js") }}')
-                .then(() => console.log('Service worker registered'))
+            navigator.serviceWorker.register('{{ asset("service-worker.js") }}')
+                .then(reg => {
+                    if (reg.waiting) {
+                        reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+                    }
+                    console.log('Service worker registered');
+                })
                 .catch(err => console.error('Service worker registration failed:', err));
         }
     </script>
-
 </body>
 
 </html>
