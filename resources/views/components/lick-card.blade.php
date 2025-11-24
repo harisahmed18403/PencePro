@@ -23,11 +23,12 @@
 
             <div class="grid grid-cols-[min-content_1fr] gap-x-4">
                 <p>Licked:</p>
-                <span class="text-error text-end">&pound; -{{ $lick->cost }}</span>
+                <x-profit class="text-end" :profit="$lick->cost * -1"></x-profit>
 
                 <p>Spat:</p>
                 @if($lick->spit)
-                    <span class="text-success text-end">&pound; +{{ $lick->spit->revenue }}</span>
+                    <x-profit class="text-end" :profit="$lick->spit->revenue"></x-profit>
+
                 @else
                     <span class="text-end">-</span>
                 @endif
