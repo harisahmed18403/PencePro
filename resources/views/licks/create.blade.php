@@ -29,7 +29,7 @@
                     <div class="form-control" x-show="hasSpit">
                         {{-- Spit Revenue --}}
                         <x-form-input name="spit_revenue" label="Spit Revenue (£)" type="number"
-                            additionalAttributes="step='0.1'"></x-form-input>
+                            additionalAttributes="step='0.1'" :required="false"></x-form-input>
                     </div>
 
                     <div class="form-control" x-show="hasSpit">
