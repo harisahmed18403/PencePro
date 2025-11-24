@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+    <x-image-modal></x-image-modal>
+
     <a href="{{ route('licks.index', ['page' => session()->get('licks_index_page')]) }}"
         class="btn btn-xs btn-soft">Back</a>
     <div class="max-w-2xl mx-auto mt-8">

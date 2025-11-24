@@ -1,12 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
+    {{-- Fullscreen Image Modal --}}
+    <x-image-modal></x-image-modal>
+
     <div class="flex flex-col h-full w-full gap-2 overflow-hidden">
 
         <div class="flex flex-col md:flex-row h-full w-full gap-2">
             <div class="flex md:flex-col overflow-x-auto h-auto min-h-1/16 md:min-w-1/4 gap-2 items-lastbaseline">
+                {{-- New --}}
                 <a href="{{ route('licks.create') }}" class="btn btn-success">New +</a>
 
+                {{-- Stats --}}
                 <div class="stat p-2 rounded-lg bg-base-100 shadow">
                     <div class="stat-title text-xs">Total</div>
                     <div class="stat-value text-sm md:text-lg">
@@ -27,7 +32,6 @@
                         <x-profit :profit="$spitRevenue" class="font-bold" />
                     </div>
                 </div>
-
             </div>
 
             <div class="flex flex-col h-full w-full gap-2">
