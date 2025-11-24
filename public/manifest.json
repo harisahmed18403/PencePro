@@ -24,5 +24,19 @@
     "start_url": "https://harisahmed.uk/pencepro",
     "scope": "https://harisahmed.uk/pencepro",
     "id": "https://harisahmed.uk/pencepro",
-    "description": "Pennies on the dollar"
+    "description": "Pennies on the dollar",
+    "screenshots": [
+        {
+            "src": "/screenshots/screen1.png",
+            "sizes": "804x1158",
+            "type": "image/png",
+            "platform": "web"
+        },
+        {
+            "src": "/screenshots/screen2.png",
+            "sizes": "583x1240",
+            "type": "image/png",
+            "platform": "mobile"
+        }
+    ]
 }
