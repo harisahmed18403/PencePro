@@ -6,7 +6,7 @@
 
     <button x-on:click="open=false" class="absolute top-4 right-4 text-white text-3xl z-20">✕</button>
 
-    <div class="relative flex items-center justify-center">
+    <div class="relative flex items-center w-full justify-center">
 
         <button x-on:click="index=(index-1+images.length)%images.length"
             class="text-white text-4xl px-4 z-20">‹</button>

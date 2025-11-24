@@ -5,34 +5,17 @@
         <form method="POST" action="{{ route('licks.store') }}" enctype="multipart/form-data" class="space-y-6">
             @csrf
 
-            <div class="flex flex-col gap-6" x-data="{ hasSpit: false }">
-                <p class="text-2xl font-semibold">New Lick</p>
 
-                <div class="flex flex-col gap-4">
-                    <div class="form-control">
-                        <label for="name" class="label">
-                            <span class="label-text">Name:</span>
-                        </label>
-                        <input name="name" id="name" maxlength="255" class="input input-bordered w-full" required />
-                        @error('name')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                        @error('name')
-                            <p class="text-error text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
+            <x-form-body title="New Lick">
 
-                    <div class="form-control">
-                        <label for="cost" class="label">
-                            <span class="label-text">Cost (£):</span>
-                        </label>
-                        <input name="cost" id="cost" type="number" step="0.1" class="input input-bordered w-full"
-                            required />
-                        @error('cost')
-                            <p class="text-error text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
+                {{-- Name --}}
+                <x-form-input name="name" label="name"></x-form-input>
 
+                {{-- Cost --}}
+                <x-form-input name="cost" label="cost (£)" type="number" additionalAttributes="step='0.1'"></x-form-input>
+
+                {{-- Spit Revenue --}}
+                <div class="flex flex-col gap-4" x-data="{hasSpit:false}">
                     <div class="form-control">
                         <label for="hasSpit" class="label">
                             <span class="label-text">Spat ?</span>
@@ -41,24 +24,21 @@
                     </div>
 
                     <div class="form-control" x-show="hasSpit">
-                        <label for="spit_revenue" class="label">
-                            <span class="label-text">Spit Revenue (£):</span>
-                        </label>
-                        <input type="number" name="spit_revenue" id="spit_revenue" class="input input-bordered w-full" />
-                    </div>
-
-                    <div class="form-control">
-                        <label for="spit_revenue" class="label">
-                            <span class="label-text">Images:</span>
-                        </label>
-                        <input type="file" name="images[]" id="images" class="file-input input-bordered w-full" multiple />
+                        <x-form-input name="spit_revenue" label="Spit Revenue (£)" type="number"
+                            additionalAttributes="step='0.1'"></x-form-input>
                     </div>
                 </div>
+
+                {{-- Additional Images --}}
+                <x-form-input name="images[]" id="images" label="Add Images" type="file" additionalAttributes="multiple"
+                    :required="false"></x-form-input>
+
 
                 <div class="flex justify-end">
                     <button type="submit" class="btn btn-success">Update</button>
                 </div>
-            </div>
+            </x-form-body>
+
         </form>
     </div>
 @endsection
