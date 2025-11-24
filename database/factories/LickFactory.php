@@ -17,7 +17,57 @@ class LickFactory extends Factory
     public function definition(): array
     {
         $temp = [
-            'name' => $this->faker->name,
+            // chatgpt
+            'name' => $this->faker->randomElement([
+                // Guitars
+                'Fender Stratocaster',
+                'Gibson Les Paul',
+                'Ibanez RG',
+                'PRS Custom 24',
+                'Yamaha Pacifica',
+                'Epiphone SG',
+                'Gretsch Electromatic',
+                'Jackson Soloist',
+                'Schecter Hellraiser',
+                'Fender Telecaster',
+
+                // Video Games
+                'The Legend of Zelda: Breath of the Wild',
+                'God of War',
+                'Spider-Man: Miles Morales',
+                'Halo Infinite',
+                'Elden Ring',
+                'Cyberpunk 2077',
+                'Animal Crossing: New Horizons',
+                'Minecraft',
+                'Call of Duty: Modern Warfare',
+                'FIFA 23',
+
+                // Consoles
+                'PlayStation 5',
+                'Xbox Series X',
+                'Nintendo Switch',
+                'PlayStation 4',
+                'Xbox One',
+                'Nintendo Switch Lite',
+                'PlayStation 4 Pro',
+                'Xbox Series S',
+                'Steam Deck',
+                'RetroPie Console',
+
+                // Electronics
+                'Apple iPhone 14',
+                'Samsung Galaxy S23',
+                'MacBook Pro 16"',
+                'Dell XPS 13',
+                'iPad Air',
+                'Sony WH-1000XM5 Headphones',
+                'Bose QuietComfort 45',
+                'Amazon Echo Dot',
+                'Google Nest Hub',
+                'Fitbit Charge 6'
+            ]),
+
             'cost' => $this->faker->numberBetween(1, 500),
             'created_at' => $this->faker->dateTimeBetween('-2 years', 'now'),
             'updated_at' => $this->faker->dateTimeBetween('-1 years', 'now'),
