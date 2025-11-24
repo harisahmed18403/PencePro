@@ -28,7 +28,7 @@
     {{-- Register service worker --}}
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('{{ asset("service-worker.js") }}')
+            navigator.serviceWorker.register('{{ asset("sw.js") }}')
                 .then(() => console.log('Service worker registered'))
                 .catch(err => console.error('Service worker registration failed:', err));
         }
