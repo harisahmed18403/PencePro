@@ -200,12 +200,12 @@ class LickController extends Controller
         $filters = [
             'All Time',
             'This Year',
-            'Last Month',
-            'Last Week',
+            'This Month',
+            'This Week',
         ];
 
         $limit = $request->get('limit', 10);
-        $filter = $request->get('filter', 'Last Month');
+        $filter = $request->get('filter', 'This Month');
 
         $mostProfitableQuery = Lick::orderBy('profit', 'desc')->limit($limit);
         $biggestLossQuery = Lick::orderBy('profit', 'asc')->limit($limit);
@@ -221,21 +221,21 @@ class LickController extends Controller
                 $dailyProfitsQuery->whereYear('updated_at', date('Y'));
                 break;
 
-            case 'Last Month':
+            case 'This Month':
                 $mostProfitableQuery->whereYear('updated_at', date('Y'))
-                    ->whereMonth('updated_at', date('m', strtotime('-1 month')));
+                    ->whereMonth('updated_at', date('m'));
 
                 $biggestLossQuery->whereYear('updated_at', date('Y'))
-                    ->whereMonth('updated_at', date('m', strtotime('-1 month')));
+                    ->whereMonth('updated_at', date('m'));
 
                 $dailyProfitsQuery->whereYear('updated_at', date('Y'))
-                    ->whereMonth('updated_at', date('m', strtotime('-1 month')));
+                    ->whereMonth('updated_at', date('m'));
                 break;
 
-            case 'Last Week':
+            case 'This Week':
                 $range = [
-                    now()->subWeek()->startOfWeek(),
-                    now()->subWeek()->endOfWeek()
+                    now()->startOfWeek(),
+                    now()->endOfWeek()
                 ];
 
                 $mostProfitableQuery->whereBetween('updated_at', $range);
