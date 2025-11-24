@@ -41,7 +41,7 @@ class LickController extends Controller
         $spitRevenue = Spit::sum('revenue');
         $totalRevenue = Lick::sum('profit');
 
-        $licksQuery = Lick::withCount('spit', 'images')->orderBy('updated_at', 'desc');
+        $licksQuery = Lick::withCount('spit', 'images')->orderBy('date', 'desc');
 
         if ($search) {
             $licksQuery->where('name', 'LIKE', "%{$search}%");
@@ -255,9 +255,9 @@ class LickController extends Controller
         }
 
         if (!is_null($range)) {
-            $mostProfitableQuery->whereBetween('updated_at', $range);
-            $biggestLossQuery->whereBetween('updated_at', $range);
-            $dailyProfitsQuery->whereBetween('created_at', $range);
+            $mostProfitableQuery->whereBetween('date', $range);
+            $biggestLossQuery->whereBetween('date', $range);
+            $dailyProfitsQuery->whereBetween('date', $range);
         }
 
         $mostProfitable = $mostProfitableQuery->get();
@@ -265,7 +265,7 @@ class LickController extends Controller
 
         $dailyProfitsRaw = $dailyProfitsQuery
             ->select(
-                DB::raw('DATE(created_at) as day'),
+                DB::raw('DATE(date) as day'),
                 DB::raw('SUM(profit) as total_profit')
             )
             ->groupBy('day')
