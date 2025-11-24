@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full overflow-hidden" data-theme="light">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full overflow-hidden" data-theme="dark">
 
 <head>
     <meta charset="utf-8">
@@ -17,7 +17,7 @@
     @endif
 </head>
 
-<body class="flex flex-col w-full h-full bg-base-200 overflow-hidden">
+<body class="flex flex-col w-full h-full bg-base-300 overflow-hidden">
     <x-nav-bar></x-nav-bar>
 
     <main class="flex-1 mx-auto md:my-2 w-full p-2 md:px-6 max-w-5xl overflow-hidden rounded-md">

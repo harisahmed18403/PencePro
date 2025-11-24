@@ -7,7 +7,8 @@
     <div class="flex flex-col h-full w-full gap-2 overflow-hidden">
 
         <div class="flex flex-col md:flex-row h-full w-full gap-2">
-            <div class="flex md:flex-col overflow-x-auto h-auto min-h-1/16 md:min-w-1/4 gap-2 items-lastbaseline">
+            <div
+                class="flex md:flex-col overflow-x-auto overflow-y-hidden h-auto min-h-1/16 md:min-w-1/4 gap-2 items-lastbaseline">
                 {{-- New --}}
                 <a href="{{ route('licks.create') }}" class="btn btn-success">New +</a>
 

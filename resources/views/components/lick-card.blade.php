@@ -1,6 +1,6 @@
 @props(['lick'])
 
-<div class="card w-full bg-base-100 card-sm md:card-md shadow-lg">
+<div class="card w-full bg-base-200 card-sm md:card-md shadow-lg">
     <div class="card-body">
         <div class="flex justify-between">
             <h2 class="card-title">{{ $lick->name }} </h2>
