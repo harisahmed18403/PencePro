@@ -90,21 +90,25 @@ class LickController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'cost' => 'required|numeric|min:0',
+            'date' => 'required|date',
             // Optional Spit field
             'spit_revenue' => 'nullable|numeric|min:0',
+            'spit_date' => 'nullable|date',
         ]);
 
         $lick = Lick::create([
             'name' => $validated['name'],
             'cost' => $validated['cost'],
             'profit' => $validated['cost'] * -1,
+            'date' => $validated['date']
         ]);
 
         if ($request->filled('spit_revenue')) {
             $profit = $validated['spit_revenue'] - $validated['cost'];
             $lick->update(['profit' => $profit]);
             $lick->spit()->create([
-                'revenue' => $validated['spit_revenue'] ?? 0,
+                'revenue' => $validated['spit_revenue'],
+                'date' => $validated['spit_date']
             ]);
         }
 
@@ -143,15 +147,18 @@ class LickController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'cost' => 'required|numeric|min:0',
+            'date' => 'required|date',
             // Optional Spit field
             'spit_revenue' => 'nullable|numeric|min:0',
+            'spit_date' => 'nullable|date',
         ]);
 
         $profit = $validated['cost'] * -1;
 
-        if ($request->filled('spit_revenue')) {
+        if ($request->filled('spit_revenue') && $request->filled('spit_date')) {
             $lick->spit->update([
-                'revenue' => $validated['spit_revenue'] ?? 0
+                'revenue' => $validated['spit_revenue'],
+                'date' => $validated['spit_date']
             ]);
 
             $profit += $validated['spit_revenue'];
@@ -161,6 +168,7 @@ class LickController extends Controller
             'name' => $validated['name'],
             'cost' => $validated['cost'],
             'profit' => $profit,
+            'date' => $validated['date']
         ]);
 
         if ($request->filled('deleteImages')) {
@@ -219,25 +227,23 @@ class LickController extends Controller
 
         $dailyProfitsQuery = Lick::query();
 
+        $range = null;
         switch ($filter) {
             case 'All Time':
                 break;
 
             case 'This Year':
-                $mostProfitableQuery->whereYear('updated_at', date('Y'));
-                $biggestLossQuery->whereYear('updated_at', date('Y'));
-                $dailyProfitsQuery->whereYear('updated_at', date('Y'));
+                $range = [
+                    now()->startOfYear(),
+                    now()->endOfYear()
+                ];
                 break;
 
             case 'This Month':
-                $mostProfitableQuery->whereYear('updated_at', date('Y'))
-                    ->whereMonth('updated_at', date('m'));
-
-                $biggestLossQuery->whereYear('updated_at', date('Y'))
-                    ->whereMonth('updated_at', date('m'));
-
-                $dailyProfitsQuery->whereYear('updated_at', date('Y'))
-                    ->whereMonth('updated_at', date('m'));
+                $range = [
+                    now()->startOfMonth(),
+                    now()->endOfMonth()
+                ];
                 break;
 
             case 'This Week':
@@ -245,11 +251,13 @@ class LickController extends Controller
                     now()->startOfWeek(),
                     now()->endOfWeek()
                 ];
-
-                $mostProfitableQuery->whereBetween('updated_at', $range);
-                $biggestLossQuery->whereBetween('updated_at', $range);
-                $dailyProfitsQuery->whereBetween('updated_at', $range);
                 break;
+        }
+
+        if (!is_null($range)) {
+            $mostProfitableQuery->whereBetween('updated_at', $range);
+            $biggestLossQuery->whereBetween('updated_at', $range);
+            $dailyProfitsQuery->whereBetween('created_at', $range);
         }
 
         $mostProfitable = $mostProfitableQuery->get();

@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('name');
             $table->float('cost');
             $table->float('profit')->nullable(true);
+            $table->date('date');
             $table->timestamps();
 
             $table->index('profit');

@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('lick_id')->constrained('licks', 'id')->cascadeOnDelete();
             $table->float('revenue');
+            $table->date('date');
             $table->timestamps();
 
             $table->index('lick_id');

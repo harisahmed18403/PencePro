@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Lick extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'cost', 'profit'];
+    protected $fillable = ['name', 'cost', 'profit', 'date'];
 
     public function spit()
     {

@@ -1,26 +1,36 @@
 @props(['lick'])
 
-<div class="card w-full bg-base-200 card-sm md:card-md shadow-lg">
+<div class="card w-full bg-base-100 shadow-md">
     <div class="card-body">
         <div class="flex justify-between">
             <h2 class="card-title">{{ $lick->name }} </h2>
             <x-profit class="card-title" :profit="$lick->profit"></x-profit>
         </div>
-        <div class="flex justify-between">
+        <div class="flex justify-between text-nowrap">
+            <div class="grid grid-cols-[min-content_1fr] gap-x-4">
+                <p>Licked at:</p>
+                <p>{{ $lick->date }}</p>
+
+                <p>Spat at:</p>
+                <p>
+                    @if($lick->spit)
+                        {{ $lick->spit->date }}
+                    @else
+                        -
+                    @endif
+                </p>
+            </div>
+
             <div class="grid grid-cols-[min-content_1fr] gap-x-4">
                 <p>Licked:</p>
-                <span class="text-error">&pound; -{{ $lick->cost }}</span>
+                <span class="text-error text-end">&pound; -{{ $lick->cost }}</span>
 
                 <p>Spat:</p>
                 @if($lick->spit)
-                    <span class="text-success">&pound; +{{ $lick->spit->revenue }}</span>
+                    <span class="text-success text-end">&pound; +{{ $lick->spit->revenue }}</span>
                 @else
-                    <span>-</span>
+                    <span class="text-end">-</span>
                 @endif
-            </div>
-
-            <div class="flex max-w-30 text-end">
-                <p>{{ $lick->updated_at->format('d-M-y') }}</p>
             </div>
         </div>
         @if ($lick->images->isNotEmpty())

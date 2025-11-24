@@ -14,6 +14,9 @@
                 {{-- Cost --}}
                 <x-form-input name="cost" label="cost (£)" type="number" additionalAttributes="step='0.1'"></x-form-input>
 
+                {{-- Date --}}
+                <x-form-input name="date" label="date" type="date" value="{{ date('Y-m-d') }}"></x-form-input>
+
                 {{-- Spit Revenue --}}
                 <div class="flex flex-col gap-4" x-data="{hasSpit:false}">
                     <div class="form-control">
@@ -24,9 +27,17 @@
                     </div>
 
                     <div class="form-control" x-show="hasSpit">
+                        {{-- Spit Revenue --}}
                         <x-form-input name="spit_revenue" label="Spit Revenue (£)" type="number"
                             additionalAttributes="step='0.1'"></x-form-input>
                     </div>
+
+                    <div class="form-control" x-show="hasSpit">
+                        {{-- Date --}}
+                        <x-form-input name="spit_date" label="Spit Date" type="date"
+                            value="{{ date('Y-m-d') }}"></x-form-input>
+                    </div>
+
                 </div>
 
                 {{-- Additional Images --}}

@@ -15,10 +15,16 @@
                 <x-form-input name="cost" :value="old('cost', $lick->cost)" label="cost (£)" type="number"
                     additionalAttributes="step='0.1'"></x-form-input>
 
-                {{-- Spit Revenue --}}
+                {{-- Date --}}
+                <x-form-input name="date" label="date" type="date" value="{{ $lick->date }}"></x-form-input>
+
                 @if ($lick->spit)
+                    {{-- Spit Revenue --}}
                     <x-form-input name="spit_revenue" :value="old('spit_revenue', $lick->spit->revenue)"
                         label="Spit Revenue (£)" type="number" additionalAttributes="step='0.1'"></x-form-input>
+
+                    {{-- Spit Date --}}
+                    <x-form-input name="spit_date" label="Spat Date" type="date" value="{{ $lick->spit->date }}"></x-form-input>
                 @endif
 
                 {{-- Additional Images --}}

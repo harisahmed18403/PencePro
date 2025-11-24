@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Spit extends Model
 {
-    protected $fillable = ['lick_id', 'revenue'];
+    protected $fillable = ['lick_id', 'revenue', 'date'];
 
     public function lick()
     {

@@ -40,12 +40,12 @@
 
                     <div class="flex justify-between text-sm text-gray-500">
                         <span>Licked at:</span>
-                        <span>{{ $lick->created_at->format('F j, Y g:i A') }}</span>
+                        <span>{{ $lick->date }}</span>
                     </div>
                     @if ($lick->spit)
                         <div class="flex justify-between text-sm text-gray-500">
                             <span>Spat at:</span>
-                            <span>{{ $lick->spit->created_at->format('F j, Y g:i A') }}</span>
+                            <span>{{ $lick->spit->date }}</span>
                         </div>
                     @endif
                     <div class="flex justify-between text-sm text-gray-500">
