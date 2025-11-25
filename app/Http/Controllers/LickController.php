@@ -38,10 +38,11 @@ class LickController extends Controller
 
         //Total revenue before filtering
         $lickRevenue = Lick::where('user_id', auth()->id())->sum('cost') * -1;
-        $spitRevenue = Spit::where('user_id', auth()->id())->sum('revenue');
+        $spitRevenue = DB::table('spits')
+            ->join('licks', 'spits.lick_id', '=', 'licks.id')
+            ->where('licks.user_id', auth()->id())
+            ->sum('spits.revenue');
         $totalRevenue = Lick::where('user_id', auth()->id())->sum('profit');
-
-
         $licksQuery = Lick::withCount('spit', 'images')
             ->where('user_id', auth()->id())
             ->orderBy('date', 'desc');
