@@ -10,8 +10,10 @@
                 class="btn {{ request()->routeIs('licks.stats') ? 'btn-active' : 'btn-ghost' }}">
                 Stats
             </a>
+
+            <p>{{ auth()->user()->name }}</p>
         </div>
 
-        <p class="md:text-xl font-medium text-end">PencePro</p>
+        <p class="text-xl font-medium text-end pr-2">PencePro</p>
     </div>
 </div>
