@@ -1,12 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="max-w-4xl w-full mx-auto p-6 bg-base-200 rounded-xl shadow">
+    <x-image-modal></x-image-modal>
+    <div class="max-w-md w-full mx-auto p-6 bg-base-200 rounded-xl shadow">
 
         <form method="POST" action="{{ route('spits.store', ['id' => $lick->id]) }}" class="space-y-4 mt-4">
             @csrf
 
             <x-form-body title="Add Spit to {{ $lick->name }}">
+                @if (!$lick->images->isEmpty())
+                    <x-image-carousel :lick="$lick"></x-image-carousel>
+                @endif
 
                 <x-form-input type="number" name="revenue" label="Spit Revenue (£)"
                     additionalAttributes="step='0.01'"></x-form-input>

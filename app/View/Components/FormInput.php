@@ -49,7 +49,7 @@ class FormInput extends Component
         elseif ($type == 'file')
             return "file-input file-input-bordered w-full";
         elseif ($type == 'date')
-            return "input input-bordered";
+            return "input input-bordered w-full";
         else
             return "input input-bordered w-full";
     }

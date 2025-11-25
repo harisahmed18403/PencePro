@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="max-w-4xl w-full mx-auto p-6 bg-base-200 rounded-xl shadow">
+    <div class="max-w-md mx-auto p-6 bg-base-200 rounded-xl shadow">
         <form method="POST" action="{{ route('licks.store') }}" enctype="multipart/form-data" class="space-y-6">
             @csrf
 
@@ -40,13 +40,13 @@
 
                 </div>
 
-                {{-- Additional Images --}}
+                {{-- Images --}}
                 <x-form-input name="images[]" id="images" label="Add Images" type="file" additionalAttributes="multiple"
                     :required="false"></x-form-input>
 
 
                 <div class="flex justify-end">
-                    <button type="submit" class="btn btn-success">Update</button>
+                    <button type="submit" class="btn btn-success">Create</button>
                 </div>
             </x-form-body>
 
