@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    <x-image-modal></x-image-modal>
     <div class="flex flex-col h-full overflow-y-scroll gap-6 pb-[30vh]">
 
         {{-- Filters Form --}}
