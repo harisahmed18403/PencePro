@@ -15,7 +15,9 @@
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
-    <link rel="manifest" href="{{ asset('manifest.json') }}">
+
+    {{-- PWA Manifest --}}
+    <link rel="manifest" href="{{ asset('pwa/manifest.json') }}">
 </head>
 
 <body class="flex flex-col w-full h-full bg-base-300 overflow-hidden">
@@ -28,7 +30,7 @@
     {{-- Register service worker --}}
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('{{ asset("service-worker.js") }}')
+            navigator.serviceWorker.register('{{ asset("pwa/service-worker.js") }}')
                 .then(reg => {
                     if (reg.waiting) {
                         reg.waiting.postMessage({ type: 'SKIP_WAITING' });
