@@ -74,5 +74,4 @@ class UserController extends Controller
 
         return redirect('/')->with('success', 'Your account has been deleted.');
     }
-
 }

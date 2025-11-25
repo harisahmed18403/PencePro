@@ -20,15 +20,14 @@
         </div>
         <div class="card w-full max-w-md shadow-lg bg-base-100">
             <div class="card-body">
-                <h2 class="text-2xl font-bold mb-4 text-center">Delete Profile</h2>
-
                 <form method="POST" action="{{ route('user.destroy') }}">
                     @csrf
-                    <label class="label">
-                        <span class="label-text">Confirm Password to Delete Account</span>
-                    </label>
-                    <input type="password" name="password" class="input input-bordered w-full mb-2" required>
-                    <button type="submit" class="btn btn-error w-full">Delete Account</button>
+                    <x-form-body title="Delete Profile">
+
+                        <x-form-input type="password" name="password"
+                            label="Confirm Password to Delete Account"></x-form-input>
+                        <button type="submit" class="btn btn-error w-full">Delete Account</button>
+                    </x-form-body>
                 </form>
             </div>
         </div>
