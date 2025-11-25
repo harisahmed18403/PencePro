@@ -1,27 +1,23 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="max-w-xl mx-auto mt-8">
-        <div class="card bg-base-100 shadow">
-            <div class="card-body">
-                <h2 class="card-title text-2xl">Add Spit to {{ $lick->name }}</h2>
+    <div class="max-w-4xl w-full mx-auto p-6 bg-base-200 rounded-xl shadow">
 
-                <form method="POST" action="{{ route('spits.store', ['id' => $lick->id]) }}" class="space-y-4 mt-4">
-                    @csrf
+        <form method="POST" action="{{ route('spits.store', ['id' => $lick->id]) }}" class="space-y-4 mt-4">
+            @csrf
 
-                    <div class="form-control">
-                        <label class="label" for="revenue">Spit Revenue (£)</label>
-                        <input type="number" name="revenue" id="revenue" step="0.01" class="input input-bordered" required>
-                        @error('revenue')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
+            <x-form-body title="Add Spit to {{ $lick->name }}">
 
-                    <div class="form-control mt-6">
-                        <button type="submit" class="btn btn-primary">Create Spit</button>
-                    </div>
-                </form>
+                <x-form-input type="number" name="revenue" label="Spit Revenue (£)"
+                    additionalAttributes="step='0.01'"></x-form-input>
+
+                <x-form-input type="date" name="date" label="Spit Date" value="{{ date('Y-m-d') }}"></x-form-input>
+
+            </x-form-body>
+
+            <div class="form-control mt-6">
+                <button type="submit" class="btn btn-primary">Create Spit</button>
             </div>
-        </div>
+        </form>
     </div>
 @endsection

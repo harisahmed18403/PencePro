@@ -8,72 +8,28 @@ use Illuminate\Http\Request;
 
 class SpitController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create(Lick $lick)
     {
         return view("spits.create", compact('lick'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request, $id)
     {
         $lick = Lick::findOrFail($id);
 
         $validated = $request->validate([
             'revenue' => 'required|numeric|min:0',
+            'date' => 'required|date'
         ]);
 
         Spit::create([
             'lick_id' => $lick->id,
             'revenue' => $validated['revenue'],
+            'date' => $validated['date']
         ]);
 
         $lick->update(['profit' => $validated['revenue'] - $lick->cost]);
 
         return redirect()->route('licks.show', $lick)->with('success', 'Spit created successfully!');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Spit $spit)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Spit $spit)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Spit $spit)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Spit $spit)
-    {
-        //
     }
 }
