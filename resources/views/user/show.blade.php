@@ -26,6 +26,7 @@
 
                         <x-form-input type="password" name="password"
                             label="Confirm Password to Delete Account"></x-form-input>
+
                         <button type="submit" class="btn btn-error w-full">Delete Account</button>
                     </x-form-body>
                 </form>

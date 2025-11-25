@@ -40,16 +40,16 @@
                 <form method="get"
                     class="flex w-full gap-2 items-center sticky top-0 left-0 z-50 pb-1 border-b border-base-300 md:pb-0 md:border-none">
                     @csrf
-                    <select name="filter" class="select select-sm md:select-md w-full" onchange="this.form.submit()">
+                    <select name="filter" class="select w-1/3 md:w-full" onchange="this.form.submit()">
                         <option {{ is_null($filter) ? 'selected' : '' }}>No Filter</option>
                         <option value="noSpits" {{ $filter == 'noSpits' ? 'selected' : '' }}>No Spits</option>
                         <option value="hasSpits" {{ $filter == 'hasSpits' ? 'selected' : '' }}>Has Spits</option>
                         <option value="profit" {{ $filter == 'profit' ? 'selected' : '' }}>Profit</option>
                         <option value="loss" {{ $filter == 'loss' ? 'selected' : '' }}>Loss</option>
                     </select>
-                    <input name="search" class="input input-sm md:input-md input-bordered w-full" value="{{ $search }}"
+                    <input name="search" class="input input-bordered w-full" value="{{ $search }}"
                         placeholder="Search ..." />
-                    <button class="btn btn-sm md:btn-md btn-info" type="submit">Go</button>
+                    <button class="btn btn-info" type="submit">Go</button>
                 </form>
 
                 {{-- Licks --}}

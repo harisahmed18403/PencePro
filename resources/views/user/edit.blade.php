@@ -6,12 +6,6 @@
             <div class="card-body">
                 <h2 class="text-2xl font-bold mb-4 text-center">Edit Profile</h2>
 
-                @if($errors->any())
-                    <div class="alert alert-error mb-4">
-                        {{ $errors->first() }}
-                    </div>
-                @endif
-
                 <form method="POST" action="{{ route('user.update') }}">
                     @csrf
 

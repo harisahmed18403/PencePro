@@ -31,7 +31,7 @@
                     @if(!$lick->images->isEmpty())
                         <div class="divider"></div>
 
-                        <div class="flex flex-col justify-center items-center h-34 mx-auto">
+                        <div class="flex w-full">
                             <x-image-carousel :lick="$lick"></x-image-carousel>
                         </div>
                     @endif

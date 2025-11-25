@@ -20,6 +20,8 @@ class FormInput extends Component
 
     public $value;
 
+    public $class;
+
     public $additionalAttributes;
     public function __construct(
         $name,
@@ -37,6 +39,19 @@ class FormInput extends Component
         $this->required = $required;
         $this->type = $type;
         $this->additionalAttributes = $additionalAttributes;
+        $this->class = $this->getClass($type);
+    }
+
+    private function getClass(string $type)
+    {
+        if ($type == 'checkbox')
+            return "checkbox checkbox-primary";
+        elseif ($type == 'file')
+            return "file-input file-input-bordered w-full";
+        elseif ($type == 'date')
+            return "input input-bordered";
+        else
+            return "input input-bordered w-full";
     }
 
 
