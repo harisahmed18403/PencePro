@@ -1,6 +1,6 @@
 {
     "background_color": "#000000",
-    "theme_color": "#00ff00",
+    "theme_color": "#000000",
     "icons": [
         {
             "src": "windows11/SmallTile.scale-100.png",

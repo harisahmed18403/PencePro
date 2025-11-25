@@ -2,8 +2,16 @@
 const CACHE_VERSION = 'v1'; // change this when you update
 
 self.addEventListener('install', event => {
-    // Activate immediately
-    self.skipWaiting();
+    event.waitUntil(
+    caches.open('app-cache').then(async cache => {
+      const response = await fetch('/build/manifest.json')
+      const manifest = await response.json()
+
+      const files = Object.values(manifest).map(item => '/build/' + item.file)
+
+      return cache.addAll(files)
+    })
+  )
 });
 
 self.addEventListener('activate', event => {
