@@ -29,8 +29,8 @@
                 <ul tabindex="0"
                     class="dropdown-content menu p-2 shadow bg-base-100 border border-base-200 rounded-box w-52">
                     <li><a href="{{ route('user.show') }}">Profile</a></li>
-                    <li>
-                        <form method="POST" action="{{ route('logout') }}">
+                    <li class="w-full">
+                        <form method="POST" action="{{ route('logout') }}" class="flex w-full">
                             @csrf
                             <button type="submit" class="w-full text-left text-error">Logout</button>
                         </form>

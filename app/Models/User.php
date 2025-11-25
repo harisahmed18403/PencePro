@@ -45,4 +45,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function licks()
+    {
+        return $this->hasMany(Lick::class);
+    }
 }

@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\LickImageTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+use App\Models\User;
 class UserController extends Controller
-{    // Show user profile
+{
+    use LickImageTrait;
     public function show()
     {
         $user = Auth::user();
@@ -43,4 +46,33 @@ class UserController extends Controller
 
         return redirect()->route('user.show')->with('success', 'Profile updated successfully.');
     }
+
+    public function destroy(Request $request)
+    {
+        $user = User::with('licks.images')->find(auth()->id());
+
+        $request->validate([
+            'password' => 'required',
+        ]);
+
+        if (!\Hash::check($request->password, $user->password)) {
+            return back()->withErrors(['password' => 'Incorrect password.']);
+        }
+
+        // Delete images
+        foreach ($user->licks as $lick) {
+            foreach ($lick->images as $lickImage) {
+                $this->deleteLickImage($lickImage);
+            }
+        }
+
+        Auth::logout();
+        $user->delete();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/')->with('success', 'Your account has been deleted.');
+    }
+
 }

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="flex justify-center mt-10">
+    <div class="flex flex-col items-center justify-center mt-10 gap-4">
         <div class="card w-full max-w-md shadow-lg bg-base-100">
             <div class="card-body">
                 <h2 class="text-2xl font-bold mb-4 text-center">My Profile</h2>
@@ -18,5 +18,20 @@
                 </div>
             </div>
         </div>
+        <div class="card w-full max-w-md shadow-lg bg-base-100">
+            <div class="card-body">
+                <h2 class="text-2xl font-bold mb-4 text-center">Delete Profile</h2>
+
+                <form method="POST" action="{{ route('user.destroy') }}">
+                    @csrf
+                    <label class="label">
+                        <span class="label-text">Confirm Password to Delete Account</span>
+                    </label>
+                    <input type="password" name="password" class="input input-bordered w-full mb-2" required>
+                    <button type="submit" class="btn btn-error w-full">Delete Account</button>
+                </form>
+            </div>
+        </div>
     </div>
+
 @endsection
