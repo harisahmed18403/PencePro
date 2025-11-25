@@ -227,10 +227,10 @@ class LickController extends Controller
         $graphType = $request->get('graphType', 'Daily Profits');
 
 
-        $mostProfitableQuery = Lick::orderBy('profit', 'desc')->limit($limit);
-        $biggestLossQuery = Lick::orderBy('profit', 'asc')->limit($limit);
+        $mostProfitableQuery = Lick::where('user_id', auth()->id())->orderBy('profit', 'desc')->limit($limit);
+        $biggestLossQuery = Lick::where('user_id', auth()->id())->orderBy('profit', 'asc')->limit($limit);
 
-        $dailyProfitsQuery = Lick::query();
+        $dailyProfitsQuery = Lick::where('user_id', auth()->id());
 
         $range = null;
         switch ($filter) {
