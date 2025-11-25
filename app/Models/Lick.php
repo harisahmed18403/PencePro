@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Lick extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'cost', 'profit', 'date'];
+    protected $fillable = ['user_id', 'name', 'cost', 'profit', 'date'];
 
     public function spit()
     {
@@ -18,5 +18,10 @@ class Lick extends Model
     public function images()
     {
         return $this->hasMany(LickImage::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }

@@ -37,11 +37,15 @@ class LickController extends Controller
         $page = $request->get('page', session('licks_index_page', 1));
 
         //Total revenue before filtering
-        $lickRevenue = Lick::sum('cost') * -1;
-        $spitRevenue = Spit::sum('revenue');
-        $totalRevenue = Lick::sum('profit');
+        $lickRevenue = Lick::where('user_id', auth()->id())->sum('cost') * -1;
+        $spitRevenue = Spit::where('user_id', auth()->id())->sum('revenue');
+        $totalRevenue = Lick::where('user_id', auth()->id())->sum('profit');
 
-        $licksQuery = Lick::withCount('spit', 'images')->orderBy('date', 'desc');
+
+        $licksQuery = Lick::withCount('spit', 'images')
+            ->where('user_id', auth()->id())
+            ->orderBy('date', 'desc');
+
 
         if ($search) {
             $licksQuery->where('name', 'LIKE', "%{$search}%");
@@ -100,7 +104,8 @@ class LickController extends Controller
             'name' => $validated['name'],
             'cost' => $validated['cost'],
             'profit' => $validated['cost'] * -1,
-            'date' => $validated['date']
+            'date' => $validated['date'],
+            'user_id' => auth()->id()
         ]);
 
         if ($request->filled('spit_revenue')) {
