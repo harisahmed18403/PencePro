@@ -28,6 +28,14 @@
                         </div>
                     @endif
 
+                    @if($lick->notes)
+                        <div class="divider"></div>
+
+                        <div class="flex">
+                            <p>{{ auth()->user()->name }} said <span class="italic">"{{ $lick->notes }}"</span></p>
+                        </div>
+                    @endif
+
                     @if(!$lick->images->isEmpty())
                         <div class="divider"></div>
 

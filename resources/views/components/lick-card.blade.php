@@ -34,6 +34,12 @@
                 @endif
             </div>
         </div>
+        @if($lick->notes)
+            <div class="flex">
+                <p class="italic">"{{ substr($lick->notes, 0, 200) }}{{ strlen($lick->notes) > 200 ? '...' : '' }}"</p>
+            </div>
+        @endif
+
         @if ($lick->images->isNotEmpty())
             <div class="flex flex-col justify-center items-center h-34 mx-auto">
                 <x-image-carousel :lick="$lick"></x-image-carousel>

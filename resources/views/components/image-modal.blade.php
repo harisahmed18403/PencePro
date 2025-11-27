@@ -1,6 +1,6 @@
-<div x-data="{ open:false, images:[], index:0 }"
-    x-on:open-fullscreen.window="images=$event.detail.images; index=$event.detail.index; open=true" x-show="open"
-    x-transition class="fixed inset-0 bg-black/90 flex items-center justify-center z-[9999]">
+<div x-data="{ open:false, images:[], notes:'', index:0 }"
+    x-on:open-fullscreen.window="images=$event.detail.images; notes=$event.detail.notes; index=$event.detail.index; open=true"
+    x-show="open" x-transition class="fixed inset-0 bg-black/90 flex flex-col items-center justify-center z-[9999]">
 
     <div class="absolute inset-0" x-on:click="open=false"></div>
 
@@ -15,4 +15,6 @@
 
         <button x-on:click="index=(index+1)%images.length" class="text-white text-4xl px-4 z-20">›</button>
     </div>
+
+    <div class="mt-4 text-white italic text-center max-w-screen-md px-4" x-text="notes"></div>
 </div>
