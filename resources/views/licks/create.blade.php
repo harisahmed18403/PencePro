@@ -44,6 +44,8 @@
                 <x-form-input name="images[]" id="images" label="Add Images" type="file" additionalAttributes="multiple"
                     :required="false"></x-form-input>
 
+                {{-- Notes --}}
+                <x-form-input name="notes" label="Add Notes" type="textarea" :required="false"></x-form-input>
 
                 <div class="flex justify-end">
                     <button type="submit" class="btn btn-success">Create</button>

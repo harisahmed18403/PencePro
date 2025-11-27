@@ -16,7 +16,7 @@
                     additionalAttributes="step='0.1'"></x-form-input>
 
                 {{-- Date --}}
-                <x-form-input name="date" label="date" type="date" value="{{ $lick->date }}"></x-form-input>
+                <x-form-input name="date" label="date" type="date" value="{{ old('date', $lick->date) }}"></x-form-input>
 
                 @if ($lick->spit)
                     {{-- Spit Revenue --}}
@@ -24,7 +24,8 @@
                         label="Spit Revenue (£)" type="number" additionalAttributes="step='0.1'"></x-form-input>
 
                     {{-- Spit Date --}}
-                    <x-form-input name="spit_date" label="Spat Date" type="date" value="{{ $lick->spit->date }}"></x-form-input>
+                    <x-form-input name="spit_date" label="Spat Date" type="date"
+                        value="{{old('spit_date', $lick->spit->date) }}"></x-form-input>
                 @endif
 
                 {{-- Additional Images --}}
@@ -38,6 +39,10 @@
                         <x-image-carousel :lick="$lick" :checkbox="true"></x-image-carousel>
                     </div>
                 @endif
+
+                {{-- Notes --}}
+                <x-form-input name="notes" label="Edit Notes" type="textarea" value="{{ old('notes', $lick->notes) }}"
+                    :required="false"></x-form-input>
 
                 <div class="flex justify-end">
                     <button type="submit" class="btn btn-success">Update</button>

@@ -86,16 +86,23 @@ class LickController extends Controller
             'name' => 'required|string|max:255',
             'cost' => 'required|numeric|min:0',
             'date' => 'required|date',
+            'notes' => 'nullable|string|max:500',
+
             // Optional Spit field
             'spit_revenue' => 'nullable|numeric|min:0',
             'spit_date' => 'nullable|date',
         ]);
+
+        if (!is_null($validated['notes']) && trim($validated['notes']) == '') {
+            $validated['notes'] = null;
+        }
 
         $lick = Lick::create([
             'name' => $validated['name'],
             'cost' => $validated['cost'],
             'profit' => $request->filled('spit_revenue') ? $validated['spit_revenue'] - $validated['cost'] : $validated['cost'] * -1,
             'date' => $validated['date'],
+            'notes' => $validated['notes'],
             'user_id' => auth()->id()
         ]);
 
@@ -133,6 +140,8 @@ class LickController extends Controller
             'name' => 'required|string|max:255',
             'cost' => 'required|numeric|min:0',
             'date' => 'required|date',
+            'notes' => 'nullable|string|max:500',
+
             // Optional Spit field
             'spit_revenue' => 'nullable|numeric|min:0',
             'spit_date' => 'nullable|date',
@@ -149,11 +158,16 @@ class LickController extends Controller
             $profit += $validated['spit_revenue'];
         }
 
+        if (!is_null($validated['notes']) && trim($validated['notes']) == '') {
+            $validated['notes'] = null;
+        }
+
         $lick->update([
             'name' => $validated['name'],
             'cost' => $validated['cost'],
             'profit' => $profit,
-            'date' => $validated['date']
+            'date' => $validated['date'],
+            'notes' => $validated['notes']
         ]);
 
         if ($request->filled('deleteImages')) {

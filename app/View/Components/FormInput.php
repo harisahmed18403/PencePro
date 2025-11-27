@@ -8,6 +8,8 @@ use Illuminate\View\Component;
 
 class FormInput extends Component
 {
+    public $tag = 'input';
+
     public $name;
 
     public $id;
@@ -40,6 +42,10 @@ class FormInput extends Component
         $this->type = $type;
         $this->additionalAttributes = $additionalAttributes;
         $this->class = $this->getClass($type);
+
+        if ($type == 'textarea') {
+            $this->tag = 'textarea';
+        }
     }
 
     private function getClass(string $type)
@@ -50,6 +56,8 @@ class FormInput extends Component
             return "file-input file-input-bordered w-full";
         elseif ($type == 'date')
             return "input input-bordered w-full";
+        elseif ($type == 'textarea')
+            return "textarea w-full";
         else
             return "input input-bordered w-full";
     }
