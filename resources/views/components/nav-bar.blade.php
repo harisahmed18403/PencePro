@@ -1,5 +1,5 @@
 <div class="navbar bg-base-100 shadow-sm justify-center">
-    <div class="flex w-full max-w-5xl md:px-6">
+    <div class="flex w-full max-w-5xl md:px-6 items-center">
         <div class="flex-1">
             <a class="btn btn-ghost text-xl" href="{{ route('home') }}"><x-logo></x-logo></a>
         </div>
