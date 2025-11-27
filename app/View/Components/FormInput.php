@@ -57,7 +57,7 @@ class FormInput extends Component
         elseif ($type == 'date')
             return "input input-bordered w-full";
         elseif ($type == 'textarea')
-            return "textarea w-full";
+            return "textarea textarea-bordered w-full";
         else
             return "input input-bordered w-full";
     }
