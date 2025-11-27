@@ -8,35 +8,17 @@ https://cdn.jsdelivr.net/npm/echarts@6.0.0/dist/echarts.min.js
         var myChart = echarts.init(chartDom);
 
         var option = {
-            title: {
-                text: '{{ $title }}'
-            },
             tooltip: { trigger: 'axis' },
-            xAxis: {
-                type: 'category',
-                data: @json($labels)
-            },
-            yAxis: { type: 'value' },
-            series: [{
-                data: @json($series),
-                type: 'line',
-                smooth: true,
-                triggerLineEvent: true
-            }],
             animation: false,
             grid: {
-                left: 0,
-                right: 0,
+                left: '5%',
+                right: '5%',
                 top: 0,
                 bottom: 0
             }
         };
 
         myChart.setOption(option);
-
-        myChart.on('click', (params) => {
-            console.log(params);
-        })
     });
 
 </script>

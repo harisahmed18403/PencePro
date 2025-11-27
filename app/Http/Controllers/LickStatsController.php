@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
@@ -14,6 +13,17 @@ class LickStatsController extends Controller
     {
         $limit = $request->get('limit', 50);
 
+        $periods = [
+            'Daily',
+            'Weekly',
+            'Monthly',
+        ];
+
+        $graphTypes = [
+            'Profit',
+            'Cumulative Profit'
+        ];
+
         $filters = [
             'All Time',
             'This Year',
@@ -22,12 +32,102 @@ class LickStatsController extends Controller
         ];
         $filter = $request->get('filter', 'This Month');
 
-        $graphTypes = [
-            'Daily Profits',
-            'Daily Cumulative'
-        ];
-        $graphType = $request->get('graphType', 'Daily Profits');
+        $range = $this->getRange($filter);
 
+        $userID = auth()->id();
+        $mostProfitableQuery = Lick::where('user_id', $userID)->orderBy('profit', 'desc')->limit($limit);
+        $biggestLossQuery = Lick::where('user_id', $userID)->orderBy('profit', 'asc')->limit($limit);
+
+        if (!is_null($range)) {
+            $mostProfitableQuery->whereBetween('date', $range);
+            $biggestLossQuery->whereBetween('date', $range);
+        }
+
+        $mostProfitable = $mostProfitableQuery->get();
+        $biggestLoss = $biggestLossQuery->get();
+
+        return view('licks.stats', compact(
+            'limit',
+            'filter',
+            'mostProfitable',
+            'biggestLoss',
+            'filters',
+            'graphTypes',
+            'periods'
+        ));
+    }
+
+    public function graph(Request $request)
+    {
+        $filter = $request->get('filter', 'This Month');
+        $period = $request->get('period', 'Daily');
+        $graphType = $request->get('graphType', 'Profit');
+
+        $range = $this->getRange($filter);
+
+        $dailyProfitsRaw = Lick::where('user_id', auth()->id())
+            ->when($range, fn($q) => $q->whereBetween('date', $range))
+            ->selectRaw(
+                match ($period) {
+                    'Weekly' => "strftime('%Y', date) || '-' || strftime('%W', date) as period, MIN(date) as sort_date, SUM(profit) as total_profit",
+                    'Monthly' => "strftime('%Y-%m', date) as period, MIN(date) as sort_date, SUM(profit) as total_profit",
+                    default => "DATE(date) as period, DATE(date) as sort_date, SUM(profit) as total_profit"
+                }
+            )
+            ->groupBy('period')
+            ->orderBy('sort_date')
+            ->get();
+
+        $start = $dailyProfitsRaw->first()?->sort_date;
+        $end = $dailyProfitsRaw->last()?->sort_date;
+
+        switch ($period) {
+            case 'Weekly':
+                $periodNoGaps = Carbon::parse($start)->weeksUntil(Carbon::parse($end));
+                break;
+            case 'Monthly':
+                $periodNoGaps = Carbon::parse($start)->monthsUntil(Carbon::parse($end));
+                break;
+            default:
+                $periodNoGaps = Carbon::parse($start)->daysUntil(Carbon::parse($end));
+                break;
+        }
+
+        $profitByPeriod = $dailyProfitsRaw->pluck('total_profit', 'period');
+
+        $graphData = [
+            'labels' => [],
+            'series' => [],
+        ];
+
+        $cumulative = 0;
+
+        foreach ($periodNoGaps as $date) {
+            $key = match ($period) {
+                'Weekly' => $date->format('o') . '-' . $date->format('W'),
+                'Monthly' => $date->format('Y-m'),
+                default => $date->toDateString()
+            };
+
+            $val = $profitByPeriod[$key] ?? 0;
+
+            if ($graphType === 'Cumulative Profit') {
+                $cumulative += $val;
+                $val = $cumulative;
+            }
+
+            $graphData['labels'][] = $key;
+            $graphData['series'][] = $val;
+        }
+
+        return response()->json([
+            'success' => true,
+            'graphData' => $graphData
+        ]);
+    }
+
+    private function getRange(string $filter)
+    {
         $range = null;
         switch ($filter) {
             case 'All Time':
@@ -55,65 +155,6 @@ class LickStatsController extends Controller
                 break;
         }
 
-        $userID = auth()->id();
-        $mostProfitableQuery = Lick::where('user_id', $userID)->orderBy('profit', 'desc')->limit($limit);
-        $biggestLossQuery = Lick::where('user_id', $userID)->orderBy('profit', 'asc')->limit($limit);
-        $dailyProfitsQuery = Lick::where('user_id', $userID);
-
-        if (!is_null($range)) {
-            $mostProfitableQuery->whereBetween('date', $range);
-            $biggestLossQuery->whereBetween('date', $range);
-            $dailyProfitsQuery->whereBetween('date', $range);
-        }
-
-        $mostProfitable = $mostProfitableQuery->get();
-        $biggestLoss = $biggestLossQuery->get();
-
-        $dailyProfitsRaw = $dailyProfitsQuery
-            ->select(
-                DB::raw('DATE(date) as day'),
-                DB::raw('SUM(profit) as total_profit')
-            )
-            ->groupBy('day')
-            ->orderBy('day')
-            ->get();
-
-
-        $start = optional($dailyProfitsRaw->first())->day;
-        $end = optional($dailyProfitsRaw->last())->day;
-
-        $period = Carbon::parse($start)->daysUntil(Carbon::parse($end));
-
-        $profitsByDay = $dailyProfitsRaw->pluck('total_profit', 'day');
-
-        $dailyProfits = [
-            'labels' => [],
-            'series' => [],
-        ];
-
-        $cumulative = 0;
-        foreach ($period as $date) {
-            $day = $date->toDateString();
-
-            if ($graphType == 'Daily Profits') {
-                $val = $profitsByDay[$day] ?? 0;
-            } elseif ($graphType == 'Daily Cumulative') {
-                $cumulative += $profitsByDay[$day] ?? 0;
-                $val = $cumulative;
-            }
-            $dailyProfits['labels'][] = $day;
-            $dailyProfits['series'][] = $val;
-        }
-
-        return view('licks.stats', compact(
-            'limit',
-            'filters',
-            'filter',
-            'graphTypes',
-            'graphType',
-            'mostProfitable',
-            'biggestLoss',
-            'dailyProfits'
-        ));
+        return $range;
     }
 }

@@ -11,12 +11,9 @@ class LineChart extends Component
     public $series;
     public $title;
 
-    public function __construct($id = 'lineChart', $labels = [], $series = [], $title = 'Line Chart')
+    public function __construct($id = 'lineChart')
     {
         $this->id = $id;
-        $this->labels = $labels;
-        $this->series = $series;
-        $this->title = $title;
     }
 
     public function render()
