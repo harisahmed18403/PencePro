@@ -4,54 +4,6 @@
     <x-image-modal></x-image-modal>
     <div class="flex flex-col h-full overflow-y-scroll gap-6 pb-[30vh]">
 
-        {{-- Filters Form --}}
-        <form method="get" class="flex gap-4">
-            <select class="select select-info" name="filter" onchange="this.form.submit()">
-                <option disabled selected>Limit</option>
-                @for($i = 10; $i <= 50; $i += 10)
-                    <option value="{{ $i }}" {{ $limit == $i ? 'selected' : '' }}>
-                        {{ $i }}
-                    </option>
-                @endfor
-            </select>
-            <select class="select select-info" name="filter" onchange="this.form.submit()">
-                @foreach($filters as $myfilter)
-                    <option value="{{ $myfilter }}" {{ $filter == $myfilter ? 'selected' : '' }}>
-                        {{ $myfilter }}
-                    </option>
-                @endforeach
-            </select>
-        </form>
-
-        {{-- Most Profitable & Biggest Loss --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {{-- Most Profitable --}}
-            <div class="card border border-base-100 shadow-md">
-                <div class="card-body">
-                    <h2 class="text-success text-lg md:text-2xl font-semibold mb-4">Most Profitable</h2>
-                    <div class="flex flex-col gap-3 max-h-[50vh] overflow-y-auto">
-                        @foreach ($mostProfitable as $lick)
-                            <x-lick-card :lick="$lick"></x-lick-card>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-
-            {{-- Biggest Loss --}}
-            <div class="card border border-base-100 shadow-md">
-                <div class="card-body">
-                    <h2 class="text-error text-lg md:text-2xl font-semibold mb-4">Biggest Loss</h2>
-                    <div class="flex flex-col gap-3 max-h-[50vh] overflow-y-auto">
-                        @foreach ($biggestLoss as $lick)
-                            <x-lick-card :lick="$lick"></x-lick-card>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="divider"></div>
-
         {{-- Chart Filters --}}
         <div class="flex gap-4 w-full">
             <select id="rangeFilter" class="select select-info">
@@ -150,6 +102,54 @@
                     document.getElementById('graphTypeFilter').addEventListener('change', loadGraph);
                 });
             </script>
+        </div>
+
+        <div class="divider"></div>
+
+        {{-- Filters Form --}}
+        <form method="get" class="flex gap-4">
+            <select class="select select-info" name="filter" onchange="this.form.submit()">
+                <option disabled selected>Limit</option>
+                @for($i = 10; $i <= 50; $i += 10)
+                    <option value="{{ $i }}" {{ $limit == $i ? 'selected' : '' }}>
+                        {{ $i }}
+                    </option>
+                @endfor
+            </select>
+            <select class="select select-info" name="filter" onchange="this.form.submit()">
+                @foreach($filters as $myfilter)
+                    <option value="{{ $myfilter }}" {{ $filter == $myfilter ? 'selected' : '' }}>
+                        {{ $myfilter }}
+                    </option>
+                @endforeach
+            </select>
+        </form>
+
+        {{-- Most Profitable & Biggest Loss --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {{-- Most Profitable --}}
+            <div class="card border border-base-100 shadow-md">
+                <div class="card-body">
+                    <h2 class="text-success text-lg md:text-2xl font-semibold mb-4">Most Profitable</h2>
+                    <div class="flex flex-col gap-3 max-h-[50vh] overflow-y-auto">
+                        @foreach ($mostProfitable as $lick)
+                            <x-lick-card :lick="$lick"></x-lick-card>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+            {{-- Biggest Loss --}}
+            <div class="card border border-base-100 shadow-md">
+                <div class="card-body">
+                    <h2 class="text-error text-lg md:text-2xl font-semibold mb-4">Biggest Loss</h2>
+                    <div class="flex flex-col gap-3 max-h-[50vh] overflow-y-auto">
+                        @foreach ($biggestLoss as $lick)
+                            <x-lick-card :lick="$lick"></x-lick-card>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection
