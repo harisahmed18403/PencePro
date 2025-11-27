@@ -20,18 +20,18 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $user = User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+        ]);
 
-
-        Lick::factory(2000)->create()->each(function ($lick) {
+        Lick::factory(2000)->create(['user_id' => $user->id])->each(function ($lick) {
             if (rand(0, 1)) {
-                $spitRevenue = rand(0, $lick->cost + 500);
+                $spitRevenue = rand($lick->cost - 100 > 0 ? $lick->cost - 100 : 0, $lick->cost + 500);
                 Spit::create([
                     'lick_id' => $lick->id,
-                    'revenue' => $spitRevenue
+                    'revenue' => $spitRevenue,
+                    'date' => $lick->date
                 ]);
 
                 $lick->update(['profit' => $lick->profit + $spitRevenue]);

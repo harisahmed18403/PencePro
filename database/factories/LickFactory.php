@@ -69,8 +69,7 @@ class LickFactory extends Factory
             ]),
 
             'cost' => $this->faker->numberBetween(1, 500),
-            'created_at' => $this->faker->dateTimeBetween('-2 years', 'now'),
-            'updated_at' => $this->faker->dateTimeBetween('-1 years', 'now'),
+            'date' => $this->faker->dateTimeBetween('-2 years', 'now')->format('Y-m-d'),
         ];
 
         $temp['profit'] = $temp['cost'] * -1;
