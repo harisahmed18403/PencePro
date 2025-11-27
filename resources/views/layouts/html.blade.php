@@ -14,6 +14,9 @@
 
     {{-- PWA Manifest --}}
     <link rel="manifest" href="{{ asset('pwa/manifest.json') }}">
+
+    <meta name="app-base-url" content="{{ url('') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body class="flex flex-col w-full h-full bg-base-300 overflow-hidden">

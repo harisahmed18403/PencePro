@@ -89,6 +89,9 @@
 
             <script>
                 document.addEventListener("DOMContentLoaded", function () {
+                    const baseUrl = document.querySelector('meta[name="app-base-url"]').content;
+                    const token = document.querySelector('meta[name="csrf-token"]').content;
+
                     var chartDom = document.getElementById('dailyProfitGraph');
                     var dailyProfitGraph = echarts.init(chartDom);
 
@@ -98,13 +101,13 @@
                         const graphType = document.getElementById('graphTypeFilter').value;
 
                         dailyProfitGraph.showLoading();
-                        fetch('/licks/stats/graph', {
+                        fetch(`${baseUrl}/licks/stats/graph`, {
                             method: 'POST',
                             credentials: 'include',
                             headers: {
                                 'Content-Type': 'application/json',
                                 'Accept': 'application/json',
-                                'X-CSRF-TOKEN': "<?= csrf_token() ?>"
+                                'X-CSRF-TOKEN': token
                             },
                             body: JSON.stringify({
                                 filter: filter,
