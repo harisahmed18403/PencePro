@@ -11,7 +11,7 @@ class LickStatsController extends Controller
 {
     public function index(Request $request)
     {
-        $limit = $request->get('limit', 50);
+        $limit = $request->get('limit', 10);
 
         $periods = [
             'Daily',
