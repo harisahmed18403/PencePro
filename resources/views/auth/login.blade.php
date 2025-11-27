@@ -22,7 +22,7 @@
                         <x-form-input type="password" name="password" label="Password" value="{{ old('password') }}"
                             additionalAttributes="autofocus"></x-form-input>
 
-                        <x-form-input type="checkbox" name="remember" label="Remember Me"></x-form-input>
+                        <x-form-input type="checkbox" name="remember" label="Remember Me" :required="false"></x-form-input>
 
                         <div class="form-control mt-2">
                             <button type="submit" class="btn btn-primary w-full">Login</button>
