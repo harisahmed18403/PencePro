@@ -1,12 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="max-w-md h-full w-full mx-auto p-6 bg-base-200 rounded-xl shadow">
-        <form method="post" action="{{ route('licks.update', $lick->id) }}" enctype="multipart/form-data" class="space-y-6">
+    <div class="max-w-md md:max-w-4xl h-full w-full mx-auto p-6 bg-base-200 rounded-xl shadow">
+        <form method="post" action="{{ route('licks.update', $lick->id) }}" enctype="multipart/form-data"
+            class="h-full space-y-6">
             @csrf
             @method('PUT')
 
-            <x-form-body title="Edit Lick">
+            <x-form-body title="Edit Lick" submitText="Update">
 
                 {{-- Name --}}
                 <x-form-input name="name" :value="old('name', $lick->name)" label="name"></x-form-input>
@@ -44,9 +45,7 @@
                 <x-form-input name="notes" label="Edit Notes" type="textarea" value="{{ old('notes', $lick->notes) }}"
                     :required="false"></x-form-input>
 
-                <div class="flex justify-end">
-                    <button type="submit" class="btn btn-success">Update</button>
-                </div>
+
             </x-form-body>
         </form>
     </div>

@@ -6,7 +6,7 @@
             @csrf
 
 
-            <x-form-body title="New Lick">
+            <x-form-body title="New Lick" submitText="Create">
 
                 {{-- Name --}}
                 <x-form-input name="name" label="name"></x-form-input>
@@ -47,9 +47,6 @@
                 {{-- Notes --}}
                 <x-form-input name="notes" label="Add Notes" type="textarea" :required="false"></x-form-input>
 
-                <div class="flex justify-end">
-                    <button type="submit" class="btn btn-success">Create</button>
-                </div>
             </x-form-body>
 
         </form>

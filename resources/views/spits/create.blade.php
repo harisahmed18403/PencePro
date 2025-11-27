@@ -7,7 +7,7 @@
         <form method="POST" action="{{ route('spits.store', ['id' => $lick->id]) }}" class="space-y-4 mt-4">
             @csrf
 
-            <x-form-body title="Add Spit to {{ $lick->name }}">
+            <x-form-body title="Add Spit to {{ $lick->name }}" submitText="Spit">
                 @if (!$lick->images->isEmpty())
                     <x-image-carousel :lick="$lick"></x-image-carousel>
                 @endif
@@ -18,10 +18,6 @@
                 <x-form-input type="date" name="date" label="Spit Date" value="{{ date('Y-m-d') }}"></x-form-input>
 
             </x-form-body>
-
-            <div class="form-control mt-6">
-                <button type="submit" class="btn btn-primary">Create Spit</button>
-            </div>
         </form>
     </div>
 @endsection

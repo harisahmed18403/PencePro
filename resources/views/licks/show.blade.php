@@ -1,12 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-
-    <a href="{{ route('licks.index', ['page' => session()->get('licks_index_page')]) }}"
-        class="btn btn-xs btn-soft">Back</a>
     <x-image-modal></x-image-modal>
-    <div class="max-w-2xl mx-auto mt-8">
-        <div class="card bg-base-100 shadow-md">
+    <div class="flex-1 max-w-2xl mx-auto h-full">
+        <div class="card bg-base-100 shadow-md h-full overflow-y-auto">
             <div class="card-body">
                 <h2 class="card-title text-3xl font-bold">{{ $lick->name }}</h2>
 
