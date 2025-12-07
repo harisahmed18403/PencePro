@@ -14,8 +14,8 @@ The application uses the terms **Lick** for purchases and **Spit** for sales. Us
 The application is responsive, supporting both mobile and desktop devices, and can be installed as a Progressive Web App (PWA).
 
 
-![Home Page Mobile](readme/mobile_home.png.png)
-![Home Page Desktop](readme/desktop_home.png.png)
+![Home Page Mobile](readme/mobile_home.png)
+![Home Page Desktop](readme/desktop_home.png)
 ## Features
 
 - Record **Licks** (purchases) and **Spits** (sales)
@@ -23,7 +23,7 @@ The application is responsive, supporting both mobile and desktop devices, and c
 - Responsive design for mobile and desktop
 - Installable as a PWA
 
-![Stats Page](readme/mobile_stats.png.png)
+![Stats Page](readme/mobile_stats.png)
 
 ## Technologies
 
